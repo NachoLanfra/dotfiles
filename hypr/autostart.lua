@@ -1,3 +1,5 @@
+hl.env("GTK_TOOLTIP_TIMEOUT", "100")
+
 local terminal = "kitty"
 
 hl.on("hyprland.start", function()

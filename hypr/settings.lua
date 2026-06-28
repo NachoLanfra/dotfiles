@@ -1,15 +1,14 @@
 -- Entorno y apariencia visual
 hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")
-
 hl.config({
     general = {
         gaps_in  = 5,
         gaps_out = 20,
         border_size = 2,
         col = {
-            active_border   = { colors = {"rgba(33ccffee)", "rgba(00ff99ee)"}, angle = 45 },
-            inactive_border = "rgba(595959aa)",
+            active_border   = "rgba(d79921ee)",  -- amarillo gruvbox
+            inactive_border = "rgba(3c3836aa)",  -- bg2 gruvbox
         },
         resize_on_border = false,
         allow_tearing = false,
@@ -24,7 +23,7 @@ hl.config({
             enabled      = true,
             range        = 4,
             render_power = 3,
-            color        = 0xee1a1a1a,
+            color        = 0xee1d2021,  -- bg base gruvbox
         },
         blur = {
             enabled   = true,
@@ -39,7 +38,9 @@ hl.config({
     input = {
         kb_layout  = "us",
         kb_variant = "intl",
-        follow_mouse = 2,
-        touchpad = { natural_scroll = false },
+        follow_mouse = 1,
+        touchpad = {
+            natural_scroll = false,
+        },
     },
 })
