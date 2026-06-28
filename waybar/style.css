@@ -1,0 +1,62 @@
+@import "colors/colors.css"; /* Mantiene los colores del repo */
+
+* {
+    font-family: 'JetBrainsMono Nerd Font', 'CaskaydiaCove Nerd Font Propo', sans-serif;
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    text-shadow: none;
+}
+
+#waybar {
+    background: transparent;
+    font-size: 14px;
+    font-weight: bold;
+    color: @fg; 
+}
+
+/* Acá está la magia: los fondos tipo "píldora" */
+#clock,
+#left,
+#right {
+    background-color: @module-bg;
+    border-radius: 15px;
+    padding: 2px 14px;
+    margin: 0 5px;
+}
+
+/* Espaciado interno de cada elemento */
+#workspaces button,
+#custom-pacman,
+#battery,
+#cpu,
+#memory,
+#network,
+#bluetooth {
+    padding: 0 6px;
+    margin: 0 2px;
+    color: @fg;
+}
+
+#workspaces button {
+    color: @inactive;
+}
+
+#workspaces button.active {
+    color: @blue; /* Color de acento para el workspace actual */
+}
+
+/* Colores de alerta heredados de tu colors.css */
+#battery.warning,
+#cpu.warning,
+#memory.warning { 
+    color: @yellow; 
+}
+
+#battery.critical,
+#cpu.critical,
+#memory.critical { 
+    color: @red; 
+}

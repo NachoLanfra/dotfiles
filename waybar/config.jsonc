@@ -1,0 +1,64 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 30,
+    "margin": "5 10 0 10",
+    "modules-left": ["group/left"],
+    "modules-center": ["clock"],
+    "modules-right": ["group/right"],
+
+    "group/left": {
+        "orientation": "horizontal",
+        "modules": ["hyprland/workspaces"]
+    },
+
+    "group/right": {
+        "orientation": "horizontal",
+        "modules": ["battery", "cpu", "memory", "network", "bluetooth"]
+    },
+
+    "custom/pacman": {
+        "format": "󰮯",
+        "tooltip": false
+    },
+
+"clock": {
+        "format": "{:%H:%M}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode": "month",
+            "weeks-pos": "none",
+            "format": {
+                "today": "<span color='#cc3333'><b><u>{}</u></b></span>"
+            }
+        }
+    },
+
+    "battery": {
+        "format": "{icon}  {capacity}%",
+        "format-charging": "󰂄  {capacity}% ({time})",
+        "format-full": "󰁹  {capacity}%",
+        "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+    },
+
+    "cpu": {
+        "format": "  {usage}%"
+    },
+
+    "memory": {
+        "format": "󰍛  {used}G/{total}G"
+    },
+
+    "network": {
+        "format-wifi": "󰤨",
+        "format-disconnected": "󰤭",
+        "tooltip-format": "{essid}"
+    },
+
+    "bluetooth": {
+        "format-on": "󰂯",
+        "format-off": "󰂲",
+        "format-disabled": "󰂲",
+        "format-connected": "󰂱"
+    }
+}
