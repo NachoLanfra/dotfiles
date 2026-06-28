@@ -2,7 +2,8 @@
     "layer": "top",
     "position": "top",
     "height": 30,
-    "margin": "5 10 0 10",
+    "margin": "6 10 0 10",
+    "tooltip-timeout": 0,
     "modules-left": ["group/left"],
     "modules-center": ["clock"],
     "modules-right": ["group/right"],
@@ -22,6 +23,7 @@
         "tooltip": false
     },
 
+
 "clock": {
         "format": "{:%H:%M}",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
@@ -29,7 +31,9 @@
             "mode": "month",
             "weeks-pos": "none",
             "format": {
-                "today": "<span color='#cc3333'><b><u>{}</u></b></span>"
+                "today": "<span color='#d79921'><b><u>{}</u></b></span>",
+                "weekdays": "<span color='#928374'>{}</span>",
+                "days": "<span color='#ebdbb2'>{}</span>"
             }
         }
     },

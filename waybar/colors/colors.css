@@ -1,16 +1,14 @@
-/* Tema Monocromático Invertido (Burbujas Blancas, Texto Negro) */
+@define-color bg       #1d2021;
+@define-color bg1      #282828;
+@define-color bg2      #3c3836;
+@define-color fg       #ebdbb2;
+@define-color inactive #928374;
+@define-color red      #cc241d;
+@define-color green    #98971a;
+@define-color yellow   #d79921;
+@define-color blue     #458588;
+@define-color purple   #b16286;
+@define-color aqua     #689d6a;
+@define-color orange   #d65d0e;
 
-@define-color module-bg     rgba(245, 245, 245, 0.95); /* Burbujas blancas casi sólidas */
-@define-color tooltip-bg    @module-bg;
-@define-color inactive      #888888; /* Gris medio para espacios inactivos */
-@define-color fg            #101010; /* Texto negro profundo */
-@define-color workspace-fg  @fg;
-@define-color highlight     #000000; /* Negro puro para resaltados */
-
-/* Acentos en negro puro */
-@define-color blue          #000000; /* Workspace activo y Pacman en negro puro */
-@define-color green         #101010; 
-
-/* Alertas sutiles (mantenemos un toque de rojo solo para batería crítica) */
-@define-color red           #cc3333; 
-@define-color yellow        #555555;
+@define-color module-bg @bg1;
