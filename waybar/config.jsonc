@@ -5,7 +5,7 @@
     "margin": "6 10 0 10",
     "tooltip-timeout": 0,
     "modules-left": ["group/left"],
-    "modules-center": ["clock"],
+    "modules-center": ["group/center"],
     "modules-right": ["group/right"],
 
     "group/left": {
@@ -13,56 +13,52 @@
         "modules": ["hyprland/workspaces"]
     },
 
+	"group/center": {
+		"orientation": "horizontal",
+		"modules": ["clock"]
+	},
+	
     "group/right": {
         "orientation": "horizontal",
         "modules": ["battery", "cpu", "memory", "network", "bluetooth"]
     },
 
-    "custom/pacman": {
-        "format": "󰮯",
+    "clock": {
+        "format": "{:%H:%M}  󰃭",
+        "on-click": "pkill -x waycal || GSK_RENDERER=gl waycal",
         "tooltip": false
     },
 
-
-"clock": {
-        "format": "{:%H:%M}",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "calendar": {
-            "mode": "month",
-            "weeks-pos": "none",
-            "format": {
-                "today": "<span color='#d79921'><b><u>{}</u></b></span>",
-                "weekdays": "<span color='#928374'>{}</span>",
-                "days": "<span color='#ebdbb2'>{}</span>"
-            }
-        }
-    },
 
     "battery": {
         "format": "{icon}  {capacity}%",
         "format-charging": "󰂄  {capacity}% ({time})",
         "format-full": "󰁹  {capacity}%",
-        "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+        "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+        "tooltip": false
     },
 
     "cpu": {
-        "format": "  {usage}%"
+        "format": "  {usage}%",
+        "tooltip": false
     },
 
     "memory": {
-        "format": "󰍛  {used}G/{total}G"
+        "format": "󰍛  {used}G/{total}G",
+        "tooltip": false
     },
 
     "network": {
         "format-wifi": "󰤨",
         "format-disconnected": "󰤭",
-        "tooltip-format": "{essid}"
+        "tooltip": false
     },
 
     "bluetooth": {
         "format-on": "󰂯",
         "format-off": "󰂲",
         "format-disabled": "󰂲",
-        "format-connected": "󰂱"
+        "format-connected": "󰂱",
+        "tooltip": false
     }
 }
