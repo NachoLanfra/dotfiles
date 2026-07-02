@@ -3,8 +3,8 @@ hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")
 hl.config({
     general = {
-        gaps_in  = 5,
-        gaps_out = 20,
+        gaps_in  = 3,
+        gaps_out = 2,
         border_size = 2,
         col = {
             active_border   = "rgba(d79921ee)",  -- amarillo gruvbox
@@ -14,6 +14,10 @@ hl.config({
         allow_tearing = false,
         layout = "dwindle",
     },
+    xwayland = {
+            force_zero_scaling  = true,
+            use_nearest_neighbor = false,
+        },
     decoration = {
         rounding       = 10,
         rounding_power = 2,
