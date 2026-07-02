@@ -20,8 +20,21 @@
 	
     "group/right": {
         "orientation": "horizontal",
-        "modules": ["battery", "cpu", "memory", "network", "bluetooth"]
+        "modules": ["battery", "cpu", "memory", "network", "custom/power"]
     },
+
+	"battery": {
+	    "states": {
+	        "warning": 30,
+	        "critical": 15
+	    },
+	    "format": "{icon}  {capacity}%",
+	    "format-charging": "󰂄  {capacity}%",
+	    "format-plugged": "󰂄  {capacity}%",
+	    "format-alt": "{icon}  {time}",
+	    "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+	    "tooltip": false
+	},
 
     "clock": {
         "format": "{:%H:%M}  󰃭",
@@ -30,13 +43,27 @@
     },
 
 
-    "battery": {
-        "format": "{icon}  {capacity}%",
-        "format-charging": "󰂄  {capacity}% ({time})",
-        "format-full": "󰁹  {capacity}%",
-        "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
-        "tooltip": false
+	"network": {
+        "format-wifi": "󰤨",
+        "format-disconnected": "󰤭",
+        "tooltip": false,
+        "on-click": "networkmanager_dmenu"
     },
+
+    "bluetooth": {
+        "format-on": "󰂯",
+        "format-off": "󰂲",
+        "format-disabled": "󰂲",
+        "format-connected": "󰂱",
+        "tooltip": false,
+        "on-click": "pkill -x blueman-manager || blueman-manager"
+    },
+
+	"custom/power": {
+	    "format": "",
+	    "on-click": "wlogout",
+	    "tooltip": false
+	},
 
     "cpu": {
         "format": "  {usage}%",
@@ -45,20 +72,6 @@
 
     "memory": {
         "format": "󰍛  {used}G/{total}G",
-        "tooltip": false
-    },
-
-    "network": {
-        "format-wifi": "󰤨",
-        "format-disconnected": "󰤭",
-        "tooltip": false
-    },
-
-    "bluetooth": {
-        "format-on": "󰂯",
-        "format-off": "󰂲",
-        "format-disabled": "󰂲",
-        "format-connected": "󰂱",
         "tooltip": false
     }
 }
