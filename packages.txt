@@ -12,6 +12,7 @@ swaybg
 swayosd
 rofi
 dunst
+colloid-gtk-theme-git
 nwg-look
 nwg-displays
 
