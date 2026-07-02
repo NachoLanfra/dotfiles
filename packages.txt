@@ -32,6 +32,8 @@ vesktop
 thunar
 thunar-archive-plugin
 file-roller
+zathura
+zathura-pdf-mupdf
 jetbrains-toolbox
 spotify-launcher
 cliphist
