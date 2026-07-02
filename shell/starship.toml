@@ -1,0 +1,46 @@
+# No agregar un salto de línea en blanco entre comandos
+add_newline = false
+
+# El formato exacto de lo que se va a mostrar (solo carpeta, git y la flechita)
+format = "$directory$git_branch$git_status$character"
+
+[directory]
+style = "bold cyan"
+read_only = " [RO]"
+truncation_length = 3
+truncate_to_repo = true
+
+[character]
+# Flechita verde si el comando anterior salió bien, roja si dio error
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+
+[git_branch]
+symbol = "git:"
+style = "bold purple"
+format = " [$symbol$branch]($style)"
+
+[git_status]
+style = "bold red"
+format = "([ $all_status$ahead_behind]($style))"
+
+# ==========================================
+# Apagar módulos molestos o quitarles el emoji
+# ==========================================
+[package]
+disabled = true
+
+[cmd_duration]
+disabled = true
+
+[nodejs]
+symbol = "node "
+
+[python]
+symbol = "py "
+
+[c]
+symbol = "c "
+
+[java]
+symbol = "java "
