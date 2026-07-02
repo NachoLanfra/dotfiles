@@ -64,3 +64,6 @@ hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true 
 
 -- Gestures
 hl.gesture({ fingers = 3, direction = "horizontal", action = "workspace" })
+
+
+hl.bind("XF86Launch2", hl.dsp.exec_cmd("nwg-displays"))

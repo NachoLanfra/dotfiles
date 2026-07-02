@@ -4,11 +4,16 @@ waybar
 wlogout
 hyprlock
 hyprshot
+grim
+slurp
+hyprpicker
+wev
 swaybg
 swayosd
 rofi
 dunst
 nwg-look
+nwg-displays
 
 # Terminal y Shell
 kitty
@@ -37,6 +42,7 @@ zathura-pdf-mupdf
 jetbrains-toolbox
 spotify-launcher
 cliphist
+wl-clipboard
 
 # Fuentes e Iconos
 ttf-jetbrains-mono-nerd
