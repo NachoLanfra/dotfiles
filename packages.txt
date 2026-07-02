@@ -1,0 +1,54 @@
+# Interfaz y Window Manager
+hyprland
+waybar
+wlogout
+hyprlock
+hyprshot
+swaybg
+swayosd
+rofi
+dunst
+nwg-look
+
+# Terminal y Shell
+kitty
+starship
+vivid
+micro
+vim
+fastfetch
+
+# Red y Bluetooth
+networkmanager
+network-manager-applet
+networkmanager-dmenu-git
+bluez
+bluez-utils
+blueman
+
+# Aplicaciones y Productividad
+firefox
+vesktop
+thunar
+thunar-archive-plugin
+file-roller
+jetbrains-toolbox
+spotify-launcher
+cliphist
+
+# Fuentes e Iconos
+ttf-jetbrains-mono-nerd
+ttf-nerd-fonts-symbols
+noto-fonts
+noto-fonts-emoji
+ttf-dejavu
+ttf-liberation
+woff2-font-awesome
+
+# Herramientas de sistema / Varios
+git
+yay
+ufw
+zram-generator
+polkit-gnome
+xdg-desktop-portal-hyprland
