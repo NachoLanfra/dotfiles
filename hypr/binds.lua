@@ -2,11 +2,13 @@ local mainMod     = "SUPER"
 local terminal    = "kitty"
 local fileManager = "thunar"
 local menu        = "hyprlauncher"
+local browser     = "firefox"
 
 -- Aplicaciones
 hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
+hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
 
 -- Ventanas
 hl.bind(mainMod .. " + C", hl.dsp.window.close())
@@ -20,8 +22,8 @@ hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("hyprlock"))
 
 -- Screenshots
-hl.bind("Print",               hl.dsp.exec_cmd("hyprshot -m region --clipboard-only"))
-hl.bind(mainMod .. " + Print", hl.dsp.exec_cmd("hyprshot -m region -o ~/Pictures"))
+hl.bind("Print",               hl.dsp.exec_cmd("hyprshot -m region -z --clipboard-only"))
+hl.bind(mainMod .. " + Print", hl.dsp.exec_cmd("hyprshot -m region -z -o ~/Pictures"))
 
 -- Foco con flechas
 hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))
