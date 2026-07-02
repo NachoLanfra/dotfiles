@@ -5,28 +5,24 @@ add_newline = false
 format = "$directory$git_branch$git_status$character"
 
 [directory]
-style = "bold cyan"
+style = "bold #d79921"
 read_only = " [RO]"
 truncation_length = 3
 truncate_to_repo = true
 
 [character]
-# Flechita verde si el comando anterior salió bien, roja si dio error
-success_symbol = "[❯](bold green)"
-error_symbol = "[❯](bold red)"
+success_symbol = "[❯](bold #b8bb26)"
+error_symbol = "[❯](bold #fb4934)"
 
 [git_branch]
 symbol = "git:"
-style = "bold purple"
+style = "bold #d3869b"
 format = " [$symbol$branch]($style)"
 
 [git_status]
-style = "bold red"
+style = "bold #fb4934"
 format = "([ $all_status$ahead_behind]($style))"
 
-# ==========================================
-# Apagar módulos molestos o quitarles el emoji
-# ==========================================
 [package]
 disabled = true
 
