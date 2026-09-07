@@ -43,13 +43,27 @@
 #cpu,
 #memory,
 #network,
-#bluetooth {
+#bluetooth,
+#custom-power {
     color: @inactive;
     padding: 0 7px;
 }
 
-#battery.warning { color: @yellow; }
-#battery.critical,
+#battery.warning {
+    color: #fabd2f; /* amarillo gruvbox */
+}
+
+#battery.critical {
+    color: #fb4934; /* rojo gruvbox */
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    to {
+        opacity: 0.5;
+    }
+}
+
 #cpu.critical,
 #memory.critical { color: @red; }
 
@@ -63,8 +77,16 @@
 }
 
 #network:hover,
-#bluetooth:hover {
+#bluetooth:hover,
+#clock:hover,
+#battery:hover,
+#pulseaudio:hover,
+#backlight:hover,
+#cpu:hover,
+#memory:hover,
+#custom-power:hover {
     color: @yellow;
+    transition: color 0.15s ease;
 }
 
 tooltip {
