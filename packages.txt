@@ -4,14 +4,14 @@ hyprlauncher
 waybar
 wlogout
 hyprlock
+hypridle
 hyprshot
 grim
 slurp
-hyprpicker
 wev
 swaybg
 swayosd
-rofi
+rofi # dependencia de networkmanager-dmenu-git (menu wifi en waybar) - no borrar
 dunst
 colloid-gtk-theme-git
 nwg-look
@@ -41,9 +41,7 @@ thunar-archive-plugin
 file-roller
 zathura
 zathura-pdf-mupdf
-jetbrains-toolbox
 spotify-launcher
-cliphist
 wl-clipboard
 
 # Fuentes e Iconos
