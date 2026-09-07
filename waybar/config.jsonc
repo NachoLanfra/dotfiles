@@ -20,7 +20,7 @@
 	
     "group/right": {
         "orientation": "horizontal",
-        "modules": ["battery", "cpu", "memory", "network", "custom/power"]
+        "modules": ["battery", "cpu", "memory", "bluetooth", "network", "custom/power"]
     },
 
 	"battery": {
@@ -47,7 +47,7 @@
         "format-wifi": "󰤨",
         "format-disconnected": "󰤭",
         "tooltip": false,
-        "on-click": "networkmanager_dmenu"
+        "on-click": "pkill -x networkmanager_dmenu || networkmanager_dmenu"
     },
 
     "bluetooth": {
