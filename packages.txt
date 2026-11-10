@@ -1,8 +1,10 @@
+# Paquetes de repos oficiales (pacman). Todo lo que esté debajo de la línea
+# "### AUR ###" se instala con yay.
+
 # Interfaz y Window Manager
 hyprland
 hyprlauncher
 waybar
-wlogout
 hyprlock
 hypridle
 hyprshot
@@ -11,11 +13,14 @@ slurp
 wev
 swaybg
 swayosd
+brightnessctl
+cliphist
 rofi # dependencia de networkmanager-dmenu-git (menu wifi en waybar) - no borrar
 dunst
-colloid-gtk-theme-git
 nwg-look
 nwg-displays
+uwsm
+sddm
 
 # Terminal y Shell
 kitty
@@ -28,14 +33,19 @@ fastfetch
 # Red y Bluetooth
 networkmanager
 network-manager-applet
-networkmanager-dmenu-git
 bluez
 bluez-utils
 blueman
 
+# Audio
+pipewire
+pipewire-alsa
+pipewire-jack
+pipewire-pulse
+wireplumber
+
 # Aplicaciones y Productividad
 firefox
-vesktop
 thunar
 thunar-archive-plugin
 file-roller
@@ -55,8 +65,21 @@ woff2-font-awesome
 
 # Herramientas de sistema / Varios
 git
-yay
 ufw
 zram-generator
 polkit-gnome
 xdg-desktop-portal-hyprland
+xdg-utils
+qt5-wayland
+qt6-wayland
+qt6-virtualkeyboard
+power-profiles-daemon
+
+### AUR ###
+yay
+wlogout
+vesktop
+colloid-gtk-theme-git
+networkmanager-dmenu-git
+sddm-sugar-light
+waycal
