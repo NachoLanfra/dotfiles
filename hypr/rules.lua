@@ -39,3 +39,11 @@ hl.window_rule({
     size   = "440 270",
     center = true,
 })
+
+hl.window_rule({
+    name   = "clipboard-float",
+    match  = { class = "^clipboard-float$" },
+    float  = true,
+    size   = "720 440",
+    center = true,
+})

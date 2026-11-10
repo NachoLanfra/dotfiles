@@ -1,5 +1,43 @@
 # Paquetes de repos oficiales (pacman). Todo lo que esté debajo de la línea
-# "### AUR ###" se instala con yay.
+# "# Base del sistema y arranque
+base
+base-devel
+linux
+linux-firmware
+intel-ucode
+sof-firmware
+grub
+efibootmgr
+sudo
+wpa_supplicant
+less
+nano
+wget
+unzip
+smartmontools
+
+# Video y multimedia
+intel-media-driver
+vulkan-intel
+vulkan-nouveau
+libpulse
+gst-plugin-pipewire
+poppler
+
+# Desarrollo
+go
+rust
+jdk21-openjdk
+maven
+sqlc
+docker
+docker-compose
+
+# Utilidades
+htop
+flatpak
+
+### AUR ###" se instala con yay.
 
 # Interfaz y Window Manager
 hyprland

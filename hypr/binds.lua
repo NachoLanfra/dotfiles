@@ -11,6 +11,7 @@ hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(runner .. fileManager))
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(runner .. browser))
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("~/.config/hypr/scripts/theme-switch.sh --menu"))
+hl.bind(mainMod .. " + SHIFT + V", hl.dsp.exec_cmd("~/.config/hypr/scripts/clipboard.sh"))
 
 -- Ventanas
 hl.bind(mainMod .. " + C", hl.dsp.window.close())

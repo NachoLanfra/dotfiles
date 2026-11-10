@@ -172,6 +172,24 @@ EOF
     put dunst.conf <<EOF
 # Generado por theme-switch.sh ($name). No editar.
 [global]
+    # estilo
+    font = "JetBrainsMono Nerd Font 10"
+    width = (260, 380)
+    origin = top-right
+    offset = (14, 44)
+    padding = 12
+    horizontal_padding = 14
+    frame_width = 2
+    gap_size = 8
+    corner_radius = 12
+    icon_corner_radius = 8
+    icon_position = left
+    max_icon_size = 48
+    progress_bar_corner_radius = 4
+    progress_bar_height = 8
+    progress_bar_frame_width = 0
+    format = "<b>%s</b>\\n%b"
+    # colores del tema
     frame_color = "#$ACCENT"
     separator_color = frame
     highlight = "#$ACCENT"
@@ -195,6 +213,22 @@ EOF
     # armamos ~/.config/dunst/dunstrc = config estandar + colores del tema
     { cat /etc/dunst/dunstrc 2>/dev/null; echo; cat "$OUT/dunst.conf"; } \
         > "${XDG_CONFIG_HOME:-$HOME/.config}/dunst/dunstrc"
+
+    # swayosd (cartel de volumen/brillo): lee ~/.config/swayosd/style.css
+    mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/swayosd"
+    put swayosd.css <<EOF
+/* Generado por theme-switch.sh ($name). No editar. */
+window#osd { border-radius: 999px; border: 2px solid #$ACCENT; background: alpha(#$BG1, 0.92); }
+window#osd #container { margin: 16px; }
+window#osd image, window#osd label { color: #$FG; }
+window#osd progressbar:disabled, window#osd image:disabled { opacity: 0.5; }
+window#osd progressbar, window#osd segmentedprogress { min-height: 6px; border-radius: 999px; background: transparent; border: none; }
+window#osd trough, window#osd segment { min-height: inherit; border-radius: inherit; border: none; background: #$BG3; }
+window#osd progress, window#osd segment.active { min-height: inherit; border-radius: inherit; border: none; background: #$ACCENT; }
+window#osd segment { margin-left: 8px; }
+window#osd segment:first-child { margin-left: 0; }
+EOF
+    ln -sf "$OUT/swayosd.css" "${XDG_CONFIG_HOME:-$HOME/.config}/swayosd/style.css"
 
     # waycal (calendario de la waybar) trae sus colores dentro del binario. Se lo
     # lanza con XDG_CONFIG_HOME=$OUT/xdg para que GTK4 cargue este gtk.css encima.
@@ -259,6 +293,13 @@ reload_live() {
     pkill -USR1 -x kitty 2>/dev/null
     pkill -USR2 -x waybar 2>/dev/null
     dunstctl reload >/dev/null 2>&1
+    # swayosd no recarga el css solo: se reinicia (queda en segundo plano)
+    if pgrep -x swayosd-server >/dev/null; then
+        pkill -x swayosd-server
+        # esperar a que el viejo suelte el nombre en dbus; si no, el nuevo falla
+        for _ in 1 2 3 4 5 6 7 8 9 10; do pgrep -x swayosd-server >/dev/null || break; sleep 0.1; done
+        setsid -f swayosd-server </dev/null >/dev/null 2>&1
+    fi
     [[ -n "${GTK_THEME:-}" ]] && gsettings set org.gnome.desktop.interface gtk-theme "$GTK_THEME" 2>/dev/null
     hyprctl eval "hl.config({ general = { col = { active_border = \"rgba(${ACCENT}ee)\", inactive_border = \"rgba(${BG2}aa)\" } }, decoration = { shadow = { color = 0xee$BG } } })" >/dev/null 2>&1
 }
