@@ -20,7 +20,7 @@
 	
     "group/right": {
         "orientation": "horizontal",
-        "modules": ["battery", "cpu", "memory", "bluetooth", "network", "idle_inhibitor", "power-profiles-daemon", "custom/power"]
+        "modules": ["battery", "cpu", "memory", "idle_inhibitor", "power-profiles-daemon", "bluetooth", "network", "custom/power"]
     },
 
 

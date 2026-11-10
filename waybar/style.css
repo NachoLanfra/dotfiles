@@ -52,6 +52,16 @@
     padding: 0 7px;
 }
 
+/* iconos solos: mismo ancho para que el espaciado se vea parejo */
+#idle_inhibitor,
+#power-profiles-daemon,
+#bluetooth,
+#network,
+#custom-power {
+    min-width: 18px;
+    padding: 0 7px;
+}
+
 #battery.warning {
     color: #fabd2f; /* amarillo gruvbox */
 }
