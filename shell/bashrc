@@ -7,6 +7,8 @@
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
+# code abre la ventana en el workspace desde donde lo lanzas, aunque tarde y cambies de workspace
+code() { ~/.config/hypr/scripts/ws-run.sh /usr/bin/code "$@"; }
 eval "$(starship init bash)"
 export LS_COLORS="$(vivid generate gruvbox-dark)"
 

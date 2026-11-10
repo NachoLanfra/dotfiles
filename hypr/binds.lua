@@ -1,4 +1,5 @@
 local mainMod     = "SUPER"
+local runner      = "~/.config/hypr/scripts/ws-run.sh "
 local terminal    = "kitty"
 local fileManager = "thunar"
 local menu        = "hyprlauncher"
@@ -6,9 +7,9 @@ local browser     = "firefox"
 
 -- Aplicaciones
 hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal))
-hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
+hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(runner .. fileManager))
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
-hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
+hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(runner .. browser))
 
 -- Ventanas
 hl.bind(mainMod .. " + C", hl.dsp.window.close())
