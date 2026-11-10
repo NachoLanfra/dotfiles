@@ -10,7 +10,7 @@ while true; do
         if [[ "$status" == "Playing" ]]; then
             text=${text//\\/\\\\}
             text=${text//\"/\\\"}
-            printf '{"text":"%s","class":"playing"}\n' "$text"
+            printf '{"text":"  %s","class":"playing"}\n' "$text"
         else
             printf '{"text":""}\n'
         fi

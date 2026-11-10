@@ -27,7 +27,7 @@
     "custom/media": {
         "exec": "~/.config/waybar/scripts/media.sh",
         "return-type": "json",
-        "format": "  {}",
+        "format": "{}",
         "max-length": 45,
         "on-click": "playerctl --ignore-player vesktop,discord,Discord,WebCord play-pause",
         "tooltip": false
