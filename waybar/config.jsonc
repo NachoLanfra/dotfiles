@@ -6,7 +6,7 @@
     "tooltip-timeout": 0,
     "modules-left": ["group/left", "mpris"],
     "modules-center": ["group/center"],
-    "modules-right": ["group/right"],
+    "modules-right": ["tray", "group/right"],
 
     "group/left": {
         "orientation": "horizontal",
@@ -20,7 +20,13 @@
 	
     "group/right": {
         "orientation": "horizontal",
-        "modules": ["idle_inhibitor", "power-profiles-daemon", "battery", "cpu", "memory", "bluetooth", "network", "custom/power"]
+        "modules": ["battery", "cpu", "memory", "bluetooth", "network", "idle_inhibitor", "power-profiles-daemon", "custom/power"]
+    },
+
+    "tray": {
+        "icon-size": 14,
+        "spacing": 8,
+        "show-passive-items": false
     },
 
     "mpris": {
@@ -49,8 +55,8 @@
     "power-profiles-daemon": {
         "format": "{icon}",
         "format-icons": {
-            "performance": "󰓅",
-            "balanced": "󰾅",
+            "performance": "󰑣",
+            "balanced": "󰗑",
             "power-saver": "󰌪"
         },
         "tooltip": false
