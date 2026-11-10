@@ -82,7 +82,7 @@
 }
 
 #cpu.critical,
-#memory.critical { color: @red; }
+#memory.critical { color: #fb4934; }
 
 #clock {
     color: @fg;
