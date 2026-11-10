@@ -23,3 +23,11 @@ hl.window_rule({
     move  = "20 monitor_h-120",
     float = true,
 })
+
+hl.window_rule({
+    name   = "nmtui-float",
+    match  = { class = "^nmtui-float$" },
+    float  = true,
+    size   = "640 420",
+    center = true,
+})

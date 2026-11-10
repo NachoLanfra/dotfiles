@@ -15,7 +15,6 @@ swaybg
 swayosd
 brightnessctl
 cliphist
-rofi # dependencia de networkmanager-dmenu-git (menu wifi en waybar) - no borrar
 dunst
 nwg-look
 nwg-displays
@@ -32,7 +31,6 @@ fastfetch
 
 # Red y Bluetooth
 networkmanager
-network-manager-applet
 bluez
 bluez-utils
 blueman
@@ -80,6 +78,5 @@ yay
 wlogout
 vesktop
 colloid-gtk-theme-git
-networkmanager-dmenu-git
 sddm-sugar-light
 waycal

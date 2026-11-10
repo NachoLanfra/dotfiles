@@ -80,7 +80,7 @@
         "format-wifi": "󰤨",
         "format-disconnected": "󰤭",
         "tooltip": false,
-        "on-click": "pkill -x networkmanager_dmenu || networkmanager_dmenu"
+        "on-click": "pkill -x nmtui || kitty --class nmtui-float -o background_opacity=0.95 -e nmtui connect"
     },
 
     "bluetooth": {
