@@ -4,7 +4,7 @@
     "height": 27,
     "margin": "4 8 0 8",
     "tooltip-timeout": 0,
-    "modules-left": ["group/left"],
+    "modules-left": ["group/left", "mpris"],
     "modules-center": ["group/center"],
     "modules-right": ["group/right"],
 
@@ -20,7 +20,40 @@
 	
     "group/right": {
         "orientation": "horizontal",
-        "modules": ["battery", "cpu", "memory", "bluetooth", "network", "custom/power"]
+        "modules": ["idle_inhibitor", "power-profiles-daemon", "battery", "cpu", "memory", "bluetooth", "network", "custom/power"]
+    },
+
+    "mpris": {
+        "format": "{player_icon}  {artist} - {title}",
+        "format-paused": "",
+        "format-stopped": "",
+        "player-icons": {
+            "default": "",
+            "spotify": ""
+        },
+        "ignored-players": ["vesktop", "discord", "Discord", "WebCord"],
+        "max-length": 45,
+        "on-click": "playerctl play-pause",
+        "tooltip": false
+    },
+
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "󰅶",
+            "deactivated": "󰛑"
+        },
+        "tooltip": false
+    },
+
+    "power-profiles-daemon": {
+        "format": "{icon}",
+        "format-icons": {
+            "performance": "󰓅",
+            "balanced": "󰾅",
+            "power-saver": "󰌪"
+        },
+        "tooltip": false
     },
 
 	"battery": {

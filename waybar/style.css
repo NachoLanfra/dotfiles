@@ -17,6 +17,7 @@
 }
 
 #workspaces,
+#mpris,
 #clock,
 #left,
 #right {
@@ -39,6 +40,8 @@
     padding: 0 8px;
 }
 
+#idle_inhibitor,
+#power-profiles-daemon,
 #battery,
 #cpu,
 #memory,
@@ -64,6 +67,10 @@
     }
 }
 
+#idle_inhibitor.activated {
+    color: @yellow;
+}
+
 #cpu.critical,
 #memory.critical { color: @red; }
 
@@ -79,6 +86,9 @@
 #network:hover,
 #bluetooth:hover,
 #clock:hover,
+#mpris:hover,
+#idle_inhibitor:hover,
+#power-profiles-daemon:hover,
 #battery:hover,
 #pulseaudio:hover,
 #backlight:hover,
