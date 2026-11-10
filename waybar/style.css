@@ -11,7 +11,7 @@
 
 #waybar {
     background: transparent;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: bold;
     color: @inactive;
 }
@@ -22,8 +22,8 @@
 #right {
     background-color: @bg1;
     border-radius: 20px;
-    padding: 2px 14px;
-    margin: 5px 5px;
+    padding: 0 12px;
+    margin: 2px 4px;
 }
 
 #workspaces button {
