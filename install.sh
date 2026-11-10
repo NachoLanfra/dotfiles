@@ -63,6 +63,13 @@ make_links() {
     link wlogout              "$CONFIG/wlogout"
     link shell/starship.toml  "$CONFIG/starship.toml"
     link shell/bashrc         "$HOME/.bashrc"
+    link micro/settings.json  "$CONFIG/micro/settings.json"
+    link micro/bindings.json  "$CONFIG/micro/bindings.json"
+    link gtk-3.0/settings.ini "$CONFIG/gtk-3.0/settings.ini"
+    link gtk-4.0/settings.ini "$CONFIG/gtk-4.0/settings.ini"
+    link mimeapps.list        "$CONFIG/mimeapps.list"
+    link gitconfig            "$HOME/.gitconfig"
+    link wallpapers           "$HOME/Pictures/wallpapers"
 }
 
 [[ $do_packages == 1 ]] && install_packages
@@ -75,6 +82,5 @@ cat <<'EOF'
 Pasos manuales (requieren root, no los hace el script):
   - SDDM:  ver sddm/README.md (tema sugar-light + sddm.conf)
   - GRUB:  ver grub/default-grub-lines.txt y grub/theme/install.sh
-  - Wallpapers: ~/Pictures/wallpapers/<tema>.{jpg,png} (gruvbox, nord, catppuccin, tokyonight);
-    los usa hypr/scripts/theme-switch.sh
+  - Lo propio de cada maquina va en ~/.bashrc.local (se carga desde shell/bashrc)
 EOF

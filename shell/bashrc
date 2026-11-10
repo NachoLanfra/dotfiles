@@ -13,3 +13,6 @@ eval "$(starship init bash)"
 export LS_COLORS="$(vivid generate gruvbox-dark)"
 
 fastfetch
+
+# cosas propias de esta maquina (instaladores, PATH, etc.) que no van al repo
+[[ -f ~/.bashrc.local ]] && . ~/.bashrc.local

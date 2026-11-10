@@ -51,6 +51,7 @@ zathura
 zathura-pdf-mupdf
 spotify-launcher
 wl-clipboard
+playerctl # waybar/media.sh y teclas multimedia
 
 # Fuentes e Iconos
 ttf-jetbrains-mono-nerd
@@ -63,6 +64,8 @@ woff2-font-awesome
 
 # Herramientas de sistema / Varios
 git
+jq # theme-switch.sh --menu
+libnotify # notify-send
 openssh # git push por ssh (remoto git@github.com)
 ufw
 zram-generator
@@ -81,3 +84,4 @@ vesktop
 colloid-gtk-theme-git
 sddm-sugar-light
 waycal
+visual-studio-code-bin

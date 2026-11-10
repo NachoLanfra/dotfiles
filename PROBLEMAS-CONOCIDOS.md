@@ -26,13 +26,8 @@ ya tiene una ventana abierta.
 lanza el comando y mueve en silencio la primera ventana nueva que aparezca.
 
 - Los binds `SUPER+E` (archivos) y `SUPER+B` (navegador) ya lo usan.
-- Para `code .` hay que cargar la función `code()` de `shell/bashrc`. Ojo:
-  `~/.bashrc` **no** está enlazado a ese archivo (tiene una línea extra del
-  instalador de `uv`), así que hay que agregar la función a mano:
-
-  ```bash
-  code() { ~/.config/hypr/scripts/ws-run.sh /usr/bin/code "$@"; }
-  ```
+- Para `code .` alcanza con la función `code()` de `shell/bashrc` (ya enlazado a
+  `~/.bashrc`; lo propio de la máquina va en `~/.bashrc.local`).
 
 **Limitaciones:**
 - Las apps lanzadas desde `hyprlauncher` (`SUPER+R`) no pasan por el wrapper.

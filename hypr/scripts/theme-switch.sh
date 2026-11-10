@@ -174,7 +174,7 @@ EOF
     if [[ -n "${GTK_THEME:-}" && -d "/usr/share/themes/$GTK_THEME" ]]; then
         local cfg="${XDG_CONFIG_HOME:-$HOME/.config}" f
         for f in "$cfg/gtk-3.0/settings.ini" "$cfg/gtk-4.0/settings.ini"; do
-            [[ -f "$f" ]] && sed -i "s/^gtk-theme-name=.*/gtk-theme-name=$GTK_THEME/" "$f"
+            [[ -f "$f" ]] && sed -i --follow-symlinks "s/^gtk-theme-name=.*/gtk-theme-name=$GTK_THEME/" "$f"
         done
         if [[ -d "$cfg/gtk-4.0" && -d "/usr/share/themes/$GTK_THEME/gtk-4.0" ]]; then
             for f in gtk.css gtk-dark.css assets; do
