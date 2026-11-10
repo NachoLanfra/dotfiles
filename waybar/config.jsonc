@@ -6,7 +6,7 @@
     "tooltip-timeout": 0,
     "modules-left": ["group/left", "mpris"],
     "modules-center": ["group/center"],
-    "modules-right": ["tray", "group/right"],
+    "modules-right": ["group/right"],
 
     "group/left": {
         "orientation": "horizontal",
@@ -23,11 +23,6 @@
         "modules": ["battery", "cpu", "memory", "bluetooth", "network", "idle_inhibitor", "power-profiles-daemon", "custom/power"]
     },
 
-    "tray": {
-        "icon-size": 14,
-        "spacing": 8,
-        "show-passive-items": false
-    },
 
     "mpris": {
         "format": "{player_icon}  {artist} - {title}",
