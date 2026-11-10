@@ -119,3 +119,7 @@ tooltip {
 calendar {
     color: @fg;
 }
+
+/* ajuste fino: centra visualmente los glifos que se dibujan corridos */
+#bluetooth { padding: 0 5px 0 9px; }
+#power-profiles-daemon { padding: 0 6px 0 8px; }
