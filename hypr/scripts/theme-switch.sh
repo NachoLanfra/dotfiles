@@ -170,6 +170,19 @@ EOF
 .waycal-footer { color: #$MUTED; border-top: 2px solid #$BG2; }
 EOF
 
+    # Tema GTK: apps GTK3 leen settings.ini; las GTK4/libadwaita, los enlaces de gtk-4.0
+    if [[ -n "${GTK_THEME:-}" && -d "/usr/share/themes/$GTK_THEME" ]]; then
+        local cfg="${XDG_CONFIG_HOME:-$HOME/.config}" f
+        for f in "$cfg/gtk-3.0/settings.ini" "$cfg/gtk-4.0/settings.ini"; do
+            [[ -f "$f" ]] && sed -i "s/^gtk-theme-name=.*/gtk-theme-name=$GTK_THEME/" "$f"
+        done
+        if [[ -d "$cfg/gtk-4.0" && -d "/usr/share/themes/$GTK_THEME/gtk-4.0" ]]; then
+            for f in gtk.css gtk-dark.css assets; do
+                [[ -e "/usr/share/themes/$GTK_THEME/gtk-4.0/$f" ]] && ln -sfn "/usr/share/themes/$GTK_THEME/gtk-4.0/$f" "$cfg/gtk-4.0/$f"
+            done
+        fi
+    fi
+
     echo "$name" | put current
 }
 
@@ -203,6 +216,7 @@ reload_live() {
     pkill -USR1 -x kitty 2>/dev/null
     pkill -USR2 -x waybar 2>/dev/null
     dunstctl reload >/dev/null 2>&1
+    [[ -n "${GTK_THEME:-}" ]] && gsettings set org.gnome.desktop.interface gtk-theme "$GTK_THEME" 2>/dev/null
     hyprctl eval "hl.config({ general = { col = { active_border = \"rgba(${ACCENT}ee)\", inactive_border = \"rgba(${BG2}aa)\" } }, decoration = { shadow = { color = 0xee$BG } } })" >/dev/null 2>&1
 }
 

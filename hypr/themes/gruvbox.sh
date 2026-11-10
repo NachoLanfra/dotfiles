@@ -14,3 +14,6 @@ C4=458588; C12=83a598
 C5=b16286; C13=d3869b
 C6=689d6a; C14=8ec07c
 C7=a89984; C15=ebdbb2
+
+# Tema GTK (variante de color de Colloid) para Thunar, blueman, etc.
+GTK_THEME=Colloid-Yellow-Dark
