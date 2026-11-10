@@ -1,8 +1,8 @@
 {
     "layer": "top",
     "position": "top",
-    "height": 24,
-    "margin": "3 8 0 8",
+    "height": 27,
+    "margin": "4 8 0 8",
     "tooltip-timeout": 0,
     "modules-left": ["group/left"],
     "modules-center": ["group/center"],
