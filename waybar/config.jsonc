@@ -4,7 +4,7 @@
     "height": 27,
     "margin": "4 8 0 8",
     "tooltip-timeout": 0,
-    "modules-left": ["group/left", "mpris"],
+    "modules-left": ["group/left", "custom/media"],
     "modules-center": ["group/center"],
     "modules-right": ["group/right"],
 
@@ -24,17 +24,12 @@
     },
 
 
-    "mpris": {
-        "format": "{player_icon}  {artist} - {title}",
-        "format-paused": "",
-        "format-stopped": "",
-        "player-icons": {
-            "default": "",
-            "spotify": ""
-        },
-        "ignored-players": ["vesktop", "discord", "Discord", "WebCord"],
+    "custom/media": {
+        "exec": "~/.config/waybar/scripts/media.sh",
+        "return-type": "json",
+        "format": "  {}",
         "max-length": 45,
-        "on-click": "playerctl play-pause",
+        "on-click": "playerctl --ignore-player vesktop,discord,Discord,WebCord play-pause",
         "tooltip": false
     },
 

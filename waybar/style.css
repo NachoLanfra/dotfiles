@@ -17,7 +17,7 @@
 }
 
 #workspaces,
-#mpris,
+#custom-media,
 #clock,
 #left,
 #right {
@@ -96,7 +96,7 @@
 #network:hover,
 #bluetooth:hover,
 #clock:hover,
-#mpris:hover,
+#custom-media:hover,
 #idle_inhibitor:hover,
 #power-profiles-daemon:hover,
 #battery:hover,

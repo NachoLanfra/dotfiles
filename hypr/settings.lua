@@ -39,6 +39,11 @@ hl.config({
     animations = {
         enabled = true,
     },
+    misc = {
+        -- las ventanas nuevas abren en el workspace donde lanzaste la app,
+        -- aunque cambies de workspace mientras carga
+        initial_workspace_tracking = 2,
+    },
     input = {
         kb_layout  = "us",
         kb_variant = "intl",
