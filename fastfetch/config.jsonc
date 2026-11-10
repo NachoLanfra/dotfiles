@@ -9,7 +9,7 @@
     }
   },
   "display": {
-    "separator": "  ",
+    "separator": "  ",
     "color": {
       "keys": "cyan"
     }
@@ -19,19 +19,73 @@
     "separator",
     {
       "type": "os",
-      "key": "",
+      "key": "  distro  ",
       "keyColor": "blue"
     },
     {
-      "type": "wm",
-      "key": "",
+      "type": "kernel",
+      "key": "  kernel  ",
+      "keyColor": "blue"
+    },
+    {
+      "type": "uptime",
+      "key": "  uptime  ",
+      "keyColor": "blue"
+    },
+    {
+      "type": "shell",
+      "key": "  shell   ",
       "keyColor": "magenta"
     },
     {
-      "type": "packages",
-      "key": "󰏖",
+      "type": "terminal",
+      "key": "  term    ",
+      "keyColor": "magenta"
+    },
+    {
+      "type": "wm",
+      "key": "  wm      ",
+      "keyColor": "magenta"
+    },
+    {
+      "type": "cpu",
+      "key": "  cpu     ",
+      "keyColor": "yellow",
+      "temp": false,
+      "format": "{name}"
+    },
+    {
+      "type": "memory",
+      "key": "  memoria ",
       "keyColor": "yellow"
     },
-    "break"
+    {
+      "type": "disk",
+      "key": "  disco   ",
+      "keyColor": "yellow",
+      "folders": "/"
+    },
+    {
+      "type": "battery",
+      "key": "  bateria ",
+      "keyColor": "green"
+    },
+    {
+      "type": "packages",
+      "key": "󰏖  paquetes",
+      "keyColor": "green"
+    },
+    {
+      "type": "command",
+      "key": "  tema    ",
+      "keyColor": "red",
+      "text": "cat ~/.config/theme/current 2>/dev/null || echo gruvbox"
+    },
+    "break",
+    {
+      "type": "colors",
+      "symbol": "circle",
+      "paddingLeft": 2
+    }
   ]
 }

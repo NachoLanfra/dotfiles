@@ -27,6 +27,25 @@ hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("hyprlock"))
 hl.bind("Print",               hl.dsp.exec_cmd("hyprshot -m region -z --clipboard-only"))
 hl.bind(mainMod .. " + Print", hl.dsp.exec_cmd("hyprshot -m region -z -o ~/Pictures"))
 
+-- Mover ventanas dentro del workspace (intercambia lugar con la vecina)
+hl.bind(mainMod .. " + SHIFT + left",  hl.dsp.window.move({ direction = "left" }))
+hl.bind(mainMod .. " + SHIFT + right", hl.dsp.window.move({ direction = "right" }))
+hl.bind(mainMod .. " + SHIFT + up",    hl.dsp.window.move({ direction = "up" }))
+hl.bind(mainMod .. " + SHIFT + down",  hl.dsp.window.move({ direction = "down" }))
+
+-- Cambiar tamano (se repite al mantener apretado)
+hl.bind(mainMod .. " + CTRL + left",  hl.dsp.window.resize({ x = -40, y = 0,  relative = true }), { repeating = true })
+hl.bind(mainMod .. " + CTRL + right", hl.dsp.window.resize({ x = 40,  y = 0,  relative = true }), { repeating = true })
+hl.bind(mainMod .. " + CTRL + up",    hl.dsp.window.resize({ x = 0,   y = -40, relative = true }), { repeating = true })
+hl.bind(mainMod .. " + CTRL + down",  hl.dsp.window.resize({ x = 0,   y = 40,  relative = true }), { repeating = true })
+
+-- Mandar la ventana al workspace anterior/siguiente
+-- ALT: te lleva con ella. ALT+SHIFT: te quedas en el workspace actual.
+hl.bind(mainMod .. " + ALT + left",          hl.dsp.window.move({ workspace = "r-1", follow = true }))
+hl.bind(mainMod .. " + ALT + right",         hl.dsp.window.move({ workspace = "r+1", follow = true }))
+hl.bind(mainMod .. " + ALT + SHIFT + left",  hl.dsp.window.move({ workspace = "r-1", follow = false }))
+hl.bind(mainMod .. " + ALT + SHIFT + right", hl.dsp.window.move({ workspace = "r+1", follow = false }))
+
 -- Foco con flechas
 hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))
 hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))

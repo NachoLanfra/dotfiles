@@ -71,6 +71,49 @@ color14 #$C14
 color15 #$C15
 EOF
 
+    # colores de ls (vivid); shell/bashrc lo lee al abrir una terminal nueva
+    echo "${VIVID_THEME:-gruvbox-dark}" | put vivid
+
+    # colorscheme de micro (truecolor); micro/settings.json apunta a "theme".
+    # Micro lo lee al abrir, asi que vale desde la proxima vez que lo abras.
+    mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/micro/colorschemes"
+    put micro-theme.micro <<EOF
+# Generado por theme-switch.sh ($name). No editar.
+color-link default "#$FG"
+color-link comment "#$MUTED"
+color-link identifier "#$BLUE"
+color-link constant "#$ORANGE"
+color-link constant.string "#$GREEN"
+color-link constant.number "#$ORANGE"
+color-link constant.specialChar "#$AQUA"
+color-link symbol "#$FG"
+color-link symbol.operator "#$AQUA"
+color-link symbol.brackets "#$FG"
+color-link type "#$YELLOW"
+color-link special "#$AQUA"
+color-link statement "#$RED"
+color-link preproc "#$PURPLE"
+color-link underlined "#$BLUE"
+color-link error "#$CRITICAL"
+color-link todo "bold #$YELLOW"
+color-link line-number "#$MUTED"
+color-link current-line-number "#$ACCENT"
+color-link cursor-line "#$BG1"
+color-link color-column "#$BG1"
+color-link statusline "#$FG,#$BG2"
+color-link tabbar "#$FG,#$BG2"
+color-link indent-char "#$BG3"
+color-link divider "#$BG3"
+color-link gutter-error "#$CRITICAL"
+color-link gutter-warning "#$WARNING"
+color-link diff-added "#$GREEN"
+color-link diff-modified "#$YELLOW"
+color-link diff-deleted "#$RED"
+color-link hlsearch "#$ON_ACCENT,#$ACCENT"
+color-link message "#$FG,#$BG1"
+EOF
+    ln -sf "$OUT/micro-theme.micro" "${XDG_CONFIG_HOME:-$HOME/.config}/micro/colorschemes/theme.micro"
+
     local defs
     defs="/* Generado por theme-switch.sh ($name). No editar. */
 @define-color bg       #$BG;

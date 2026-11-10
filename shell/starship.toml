@@ -1,8 +1,22 @@
-# No agregar un salto de línea en blanco entre comandos
+# Una sola línea, sin salto en blanco entre comandos.
+# Los colores son nombres ANSI (yellow, bright-red...): los pinta la paleta de
+# kitty, así que cambian solos con el tema (SUPER+T).
 add_newline = false
 
-# El formato exacto de lo que se va a mostrar (solo carpeta, git y la flechita)
-format = "$directory$git_branch$git_status$character"
+# Orden: carpeta, git, lenguaje/entorno, duración, error, flecha
+format = """
+$directory\
+$git_branch\
+$git_status\
+$python\
+$nodejs\
+$rust\
+$golang\
+$java\
+$c\
+$cmd_duration\
+$status\
+$character"""
 
 [directory]
 style = "bold yellow"
@@ -11,8 +25,8 @@ truncation_length = 3
 truncate_to_repo = true
 
 [character]
-success_symbol = "[❯](bold bright-green)"
-error_symbol = "[❯](bold bright-red)"
+success_symbol = "[ ❯](bold bright-green)"
+error_symbol = "[ ❯](bold bright-red)"
 
 [git_branch]
 symbol = "git:"
@@ -23,20 +37,48 @@ format = " [$symbol$branch]($style)"
 style = "bold bright-red"
 format = "([ $all_status$ahead_behind]($style))"
 
-[package]
-disabled = true
-
+# Duración: solo si el comando tardó 2 s o más
 [cmd_duration]
-disabled = true
+min_time = 2000
+format = " [took $duration]($style)"
+style = "yellow"
+
+# Código de salida: solo si el comando falló
+[status]
+disabled = false
+format = " [✗ $status]($style)"
+style = "bold bright-red"
+
+# Lenguajes: solo aparecen dentro de un proyecto de ese lenguaje
+[python]
+symbol = "py "
+format = " [${symbol}${pyenv_prefix}(${version} )(\\($virtualenv\\) )]($style)"
+style = "bright-blue"
 
 [nodejs]
 symbol = "node "
+format = " [$symbol($version )]($style)"
+style = "bright-green"
 
-[python]
-symbol = "py "
+[rust]
+symbol = "rs "
+format = " [$symbol($version )]($style)"
+style = "bright-red"
 
-[c]
-symbol = "c "
+[golang]
+symbol = "go "
+format = " [$symbol($version )]($style)"
+style = "bright-cyan"
 
 [java]
 symbol = "java "
+format = " [$symbol($version )]($style)"
+style = "bright-yellow"
+
+[c]
+symbol = "c "
+format = " [$symbol($version )]($style)"
+style = "bright-blue"
+
+[package]
+disabled = true
