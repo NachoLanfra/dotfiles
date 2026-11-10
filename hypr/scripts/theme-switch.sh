@@ -191,7 +191,9 @@ set_wallpaper() {
     if [[ -n "$old" ]] && tr '\0' ' ' < "/proc/${old%%$'\n'*}/cmdline" 2>/dev/null | grep -qF -- "-i $wp "; then
         return 0
     fi
-    setsid -f swaybg -i "$wp" -m fill >/dev/null 2>&1
+    # stdin de /dev/null: si no, swaybg hereda la terminal del selector y la
+    # ventana de kitty no se cierra al terminar
+    setsid -f swaybg -i "$wp" -m fill </dev/null >/dev/null 2>&1
     sleep 0.7
     # cierra solo los swaybg anteriores; el nuevo es el ultimo en arrancar
     for new in $old; do kill "$new" 2>/dev/null; done
