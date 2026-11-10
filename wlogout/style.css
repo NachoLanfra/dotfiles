@@ -1,3 +1,5 @@
+@import "colors.css";
+
 * {
     background-image: none;
     box-shadow: none;
@@ -5,16 +7,16 @@
 }
 
 window {
-    background-color: rgba(29, 32, 33, 0.90);
+    background-color: alpha(@bg, 0.90);
 }
 
 button {
     min-width: 150px;
     min-height: 150px;
     border-radius: 12px;
-    border-color: #504945;
-    color: #ebdbb2;
-    background-color: #3c3836;
+    border-color: @bg3;
+    color: @fg;
+    background-color: @bg2;
     border-style: solid;
     border-width: 2px;
     margin: 25px;
@@ -23,8 +25,8 @@ button {
 }
 
 button:focus, button:active, button:hover {
-    background-color: #d79921;
-    border-color: #fabd2f;
-    color: #1d2021;
+    background-color: @accent;
+    border-color: @accent2;
+    color: @onaccent;
     outline-style: none;
 }

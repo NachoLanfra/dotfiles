@@ -31,3 +31,11 @@ hl.window_rule({
     size   = "640 420",
     center = true,
 })
+
+hl.window_rule({
+    name   = "theme-float",
+    match  = { class = "^theme-float$" },
+    float  = true,
+    size   = "440 270",
+    center = true,
+})

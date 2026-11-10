@@ -67,11 +67,14 @@ make_links() {
 
 [[ $do_packages == 1 ]] && install_packages
 [[ $do_links == 1 ]] && make_links
+# genera los archivos del tema (~/.config/theme) que leen las configs
+"$DOTFILES/hypr/scripts/theme-switch.sh" --generate
 
 cat <<'EOF'
 
 Pasos manuales (requieren root, no los hace el script):
   - SDDM:  ver sddm/README.md (tema sugar-light + sddm.conf)
   - GRUB:  ver grub/default-grub-lines.txt y grub/theme/install.sh
-  - Wallpaper: ~/Pictures/wallpaper.jpg (lo usa hypr/autostart.lua)
+  - Wallpapers: ~/Pictures/wallpapers/<tema>.{jpg,png} (gruvbox, nord, catppuccin, tokyonight);
+    los usa hypr/scripts/theme-switch.sh
 EOF

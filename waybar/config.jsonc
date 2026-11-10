@@ -66,7 +66,7 @@
 
     "clock": {
         "format": "{:%H:%M}  󰃭",
-        "on-click": "pkill -x waycal || GSK_RENDERER=gl waycal",
+        "on-click": "pkill -x waycal || GSK_RENDERER=gl XDG_CONFIG_HOME=$HOME/.config/theme/xdg waycal",
         "tooltip": false
     },
 

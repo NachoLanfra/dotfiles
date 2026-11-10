@@ -1,14 +1,19 @@
 -- Entorno y apariencia visual
 hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")
+-- Colores del tema (generado por theme-switch.sh); si falta, usa Gruvbox
+local ok, theme = pcall(dofile, os.getenv("HOME") .. "/.config/theme/hypr.lua")
+if not ok then
+    theme = { active_border = "rgba(d79921ee)", inactive_border = "rgba(3c3836aa)", shadow = 0xee1d2021 }
+end
 hl.config({
     general = {
         gaps_in  = 3,
         gaps_out = 2,
         border_size = 2,
         col = {
-            active_border   = "rgba(d79921ee)",  -- amarillo gruvbox
-            inactive_border = "rgba(3c3836aa)",  -- bg2 gruvbox
+            active_border   = theme.active_border,
+            inactive_border = theme.inactive_border,
         },
         resize_on_border = false,
         allow_tearing = false,
@@ -27,7 +32,7 @@ hl.config({
             enabled      = true,
             range        = 4,
             render_power = 3,
-            color        = 0xee1d2021,  -- bg base gruvbox
+            color        = theme.shadow,
         },
         blur = {
             enabled   = true,

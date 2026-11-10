@@ -5,22 +5,22 @@ add_newline = false
 format = "$directory$git_branch$git_status$character"
 
 [directory]
-style = "bold #d79921"
+style = "bold yellow"
 read_only = " [RO]"
 truncation_length = 3
 truncate_to_repo = true
 
 [character]
-success_symbol = "[❯](bold #b8bb26)"
-error_symbol = "[❯](bold #fb4934)"
+success_symbol = "[❯](bold bright-green)"
+error_symbol = "[❯](bold bright-red)"
 
 [git_branch]
 symbol = "git:"
-style = "bold #d3869b"
+style = "bold bright-purple"
 format = " [$symbol$branch]($style)"
 
 [git_status]
-style = "bold #fb4934"
+style = "bold bright-red"
 format = "([ $all_status$ahead_behind]($style))"
 
 [package]
