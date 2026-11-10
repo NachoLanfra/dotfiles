@@ -63,6 +63,7 @@ woff2-font-awesome
 
 # Herramientas de sistema / Varios
 git
+openssh # git push por ssh (remoto git@github.com)
 ufw
 zram-generator
 polkit-gnome
