@@ -40,22 +40,31 @@ detect() {
 # mon_field <monitor> <campo>
 mon_field() { jq -r --arg n "$1" '.[] | select(.name == $n) | .'"$2" <<<"$MONITORS_JSON"; }
 
-# modo actual de una opcion: duplicar | extender | solo-portatil | solo-externa
+# modo actual: duplicar | extender | extender-izq | solo-portatil | solo-externa
 current_mode() {
     local ext=${EXTERNALS[0]:-}
     [[ -z "$ext" ]] && { echo solo-portatil; return; }
     [[ "$(mon_field "$ext" disabled)" == true ]] && { echo solo-portatil; return; }
     [[ "$(mon_field "$INTERNAL" disabled)" == true ]] && { echo solo-externa; return; }
     [[ "$(mon_field "$ext" mirrorOf)" != none ]] && { echo duplicar; return; }
-    echo extender
+    # extendidas: la externa a la izquierda de la del portatil o a la derecha
+    if (( $(mon_field "$ext" x) < $(mon_field "$INTERNAL" x) )); then echo extender-izq; else echo extender; fi
 }
 
 # ----------------------------------------------------- especificacion de modos
-# first_mode <monitor>: el modo preferido, tal cual lo da Hyprland (sin "Hz")
+# first_mode <monitor>: el mejor modo. No sirve el primero de la lista de
+# Hyprland (en monitores 4K suele ser 3840x2160 a 30 Hz): se elige la resolucion
+# mas alta de hasta 3840 px de ancho (4096 es formato cine y se ve estirado) y,
+# dentro de esa, la frecuencia mas alta.
 first_mode() {
     local m
-    m="$(jq -r --arg n "$1" '.[] | select(.name == $n) | .availableModes[0]' <<<"$MONITORS_JSON")"
-    echo "${m%Hz}"
+    m="$(jq -r --arg n "$1" '.[] | select(.name == $n) | .availableModes[]' <<<"$MONITORS_JSON" |
+        sed 's/Hz$//' |
+        awk -F'[x@]' '$1 <= 3840 { printf "%d %d %s\n", $1 * $2, ($3 + 0) * 100, $0 }' |
+        sort -k1,1nr -k2,2nr | head -1 | cut -d' ' -f3-)"
+    # si no hay ninguno de 3840 o menos, el primero que de Hyprland
+    [[ -z "$m" ]] && m="$(jq -r --arg n "$1" '.[] | select(.name == $n) | .availableModes[0]' <<<"$MONITORS_JSON")" && m="${m%Hz}"
+    echo "$m"
 }
 
 # internal_spec: "modo escala" de la pantalla propia, segun monitors.lua
@@ -86,13 +95,22 @@ logical_width() {
 lua() { hyprctl eval "$1" 2>&1; }
 
 mon_lua() { # <salida> <modo> <posicion> <escala> [espejo-de]
-    local extra=""
-    [[ -n "${5:-}" ]] && extra=", mirror = \"$5\""
-    printf 'hl.monitor({ output = "%s", mode = "%s", position = "%s", scale = %s%s })' "$1" "$2" "$3" "$4" "$extra"
+    # mirror = "" apaga un espejo anterior (si no, al pasar de duplicar a extender
+    # la pantalla seguia duplicada)
+    local extra=", mirror = \"${5:-}\""
+    printf 'hl.monitor({ output = "%s", mode = "%s", position = "%s", scale = %s, disabled = false%s })' "$1" "$2" "$3" "$4" "$extra"
 }
 off_lua() { printf 'hl.monitor({ output = "%s", disabled = true })' "$1"; }
 
+# un solo cambio a la vez: los eventos de enchufar/desenchufar que dispara el propio
+# cambio no tienen que pisarlo a medias
 apply() {
+    exec 8>"${XDG_RUNTIME_DIR:-/tmp}/pantallas-apply.lock"
+    flock -w 20 8 || return 1
+    apply_locked "$@"
+}
+
+apply_locked() {
     local what="$1" ext int_spec ext_spec iw ew code="" out e
     detect
     if [[ -z "$INTERNAL" ]]; then notify "Pantallas" "No encuentro la pantalla del portatil" normal; return 1; fi
@@ -101,6 +119,10 @@ apply() {
         notify "No hay otra pantalla conectada" "Conecta el cable (HDMI / USB-C) y proba de nuevo" normal
         return 1
     fi
+
+    # se guarda ahora y no al final: los eventos de enchufar/desenchufar que dispara
+    # este mismo cambio leen el modo guardado, y tiene que ser el nuevo
+    mkdir -p "$(dirname "$STATE_FILE")" && echo "$what" >"$STATE_FILE"
 
     int_spec="$(internal_spec)"
     # shellcheck disable=SC2086
@@ -134,6 +156,14 @@ apply() {
         *) echo "opcion desconocida: $what" >&2; return 1 ;;
     esac
 
+    local final_code="$code"
+    # Si ya estan las dos extendidas, mover una a su lugar nuevo la deja un instante
+    # encima de la otra y Hyprland avisa "Monitor ... overlaps". Se evita sacando
+    # las dos lejos antes de acomodarlas (cada una queda en un lugar libre).
+    if [[ "$(current_mode)" == extender* && "$what" != solo-portatil ]]; then
+        code="$(mon_lua "$INTERNAL" "$imode" "30000x0" "$iscale")"$'\n'"$(mon_lua "$ext" "$emode" "60000x0" "$escale")"$'\n'"$code"
+    fi
+
     # una sentencia por llamada, asi un error no deja la mitad aplicada sin avisar
     local line
     while IFS= read -r line; do
@@ -143,18 +173,78 @@ apply() {
             return 1
         fi
     done <<<"$code"
-    mkdir -p "$(dirname "$STATE_FILE")" && echo "$what" >"$STATE_FILE"
+    # si una pantalla quedo invisible para los programas, apagarla y volver a
+    # encenderla la recupera (se le reaplica su linea de la configuracion final)
+    local lost _
+    for _ in 1 2; do
+        sleep 1.2
+        lost="$(lost_outputs)"
+        [[ -z "$lost" ]] && break
+        for e in $lost; do
+            lua "$(off_lua "$e")" >/dev/null
+            sleep 0.8
+            while IFS= read -r line; do
+                [[ "$line" == *"output = \"$e\""* ]] && lua "$line" >/dev/null
+            done <<<"$final_code"
+        done
+    done
+    fix_wallpaper
     notify "$msg"
+}
+
+# awww pone un fondo negro (transparente) en una pantalla recien enchufada y
+# se ve el fondo de Hyprland (el de la chica en el subte): se le pone el mismo
+# fondo que tiene la del portatil
+fix_wallpaper() {
+    command -v awww >/dev/null || return 0
+    local img out i o clean=0
+    for i in $(seq 1 20); do
+        img="$(awww query 2>/dev/null | sed -n 's/.*currently displaying: image: //p' | head -1)"
+        [[ -n "$img" ]] && break
+        sleep 0.2
+    done
+    [[ -n "$img" ]] || return 0
+    # awww recrea la superficie cuando Hyprland reconfigura la pantalla: se vigila
+    # un rato y se repinta lo que quede sin fondo, hasta ver 6 revisiones limpias
+    for i in $(seq 1 40); do
+        out="$(awww query 2>/dev/null | grep -v 'image:' | sed -n 's/^: \([^:]*\):.*/\1/p')"
+        if [[ -z "$out" ]]; then
+            (( ++clean >= 6 )) && return 0
+        else
+            clean=0
+            for o in $out; do awww img "$img" -o "$o" --transition-type none >/dev/null 2>&1; done
+        fi
+        sleep 0.25
+    done
+}
+
+# lost_outputs: pantallas encendidas (y no en espejo) que los programas no ven.
+# A veces, tras varios cambios, Hyprland deja una pantalla activa pero invisible
+# para los programas: no tiene fondo ni barra y no se puede capturar. Se detecta
+# preguntandole a awww que pantallas ve.
+lost_outputs() {
+    command -v awww >/dev/null || return 0
+    local o seen
+    seen="$(awww query 2>/dev/null)" || return 0
+    for o in $(hyprctl monitors -j | jq -r '.[] | select(.mirrorOf == "none") | .name'); do
+        grep -q "^: $o:" <<<"$seen" || echo "$o"
+    done
 }
 
 # aplica lo ultimo que se eligio; sin pantalla externa no hace nada
 saved() {
-    exec 9>"${XDG_RUNTIME_DIR:-/tmp}/pantallas.lock"
-    flock -n 9 || return 0
     sleep 1   # deja que la pantalla recien enchufada termine de aparecer
+    # esperar a que termine cualquier cambio en curso ANTES de leer el modo guardado
+    # (si no, se re-aplicaba el modo viejo y se deshacia lo que acabas de elegir)
+    exec 8>"${XDG_RUNTIME_DIR:-/tmp}/pantallas-apply.lock"
+    flock -w 30 8 || return 0
     detect
     (( ${#EXTERNALS[@]} == 0 )) && return 0
-    QUIET=1 apply "$(cat "$STATE_FILE" 2>/dev/null || echo extender)"
+    local want
+    want="$(cat "$STATE_FILE" 2>/dev/null || echo extender)"
+    # ya esta como corresponde
+    [[ "$(current_mode)" == "$want" ]] && return 0
+    QUIET=1 apply_locked "$want"
 }
 
 # si la pantalla del portatil esta apagada y no queda ninguna otra, se reenciende
@@ -182,7 +272,6 @@ menu() {
 pick() {
     local ids=(duplicar extender extender-izq solo-portatil solo-externa)
     local titles=("Duplicar" "Extender a la derecha" "Extender a la izquierda" "Solo el portatil" "Solo la pantalla externa")
-    local helps=("la misma imagen en las dos pantallas" "la otra pantalla es la continuacion, a la derecha" "la otra pantalla es la continuacion, a la izquierda" "apaga la otra pantalla" "apaga la pantalla del portatil")
     local n=${#ids[@]} sel=0 key rest cur i
 
     detect
@@ -193,21 +282,20 @@ pick() {
         local i
         printf '\e[H\e[2J\n  \e[1mPantallas\e[0m'
         if (( ${#EXTERNALS[@]} == 0 )); then
-            printf '\n\n  \e[33mNo hay otra pantalla conectada.\e[0m\n  \e[2mConecta el cable (HDMI / USB-C) y vuelve a abrir esto.\e[0m\n'
-            printf '\n  \e[2mEsc para salir\e[0m\n'
+            printf '\n\n  \e[33mNo hay otra pantalla conectada.\e[0m\n'
+            printf '  \e[2mConecta el cable HDMI o USB-C.\e[0m\n'
+            printf '\n  \e[2mEsc salir\e[0m\n'
             return
         fi
         printf '  \e[2m(%s + %s)\e[0m\n\n' "$INTERNAL" "${EXTERNALS[0]}"
         for ((i = 0; i < n; i++)); do
             if (( i == sel )); then
-                printf '  \e[1;7m ❯ %d  %-26s \e[0m \e[2m%s\e[0m' "$((i + 1))" "${titles[i]}" "${helps[i]}"
+                printf '  \e[1;7m ❯ %d  %-24s \e[0m\n' "$((i + 1))" "${titles[i]}"
             else
-                printf '    %d  %-26s  \e[2m%s\e[0m' "$((i + 1))" "${titles[i]}" "${helps[i]}"
+                printf '    %d  %s\n' "$((i + 1))" "${titles[i]}"
             fi
-            [[ "${ids[i]}" == "$cur" ]] && printf ' \e[2m(actual)\e[0m'
-            printf '\n'
         done
-        printf '\n  \e[2m↑↓ mover · Enter elegir · 1-5 directo · Esc salir\e[0m\n'
+        printf '\n  \e[2m↑↓ mover · Enter elegir · Esc salir\e[0m\n'
     }
 
     printf '\e[?25l'

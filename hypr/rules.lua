@@ -44,7 +44,7 @@ hl.window_rule({
     name   = "pantallas-float",
     match  = { class = "^pantallas-float$" },
     float  = true,
-    size   = "640 300",
+    size   = "480 290",
     center = true,
 })
 

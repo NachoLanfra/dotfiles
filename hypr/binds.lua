@@ -29,8 +29,12 @@ hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ mode = "maximized" }))    
 
 -- Sistema
 hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'")) -- Cerrar sesión
-hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("hyprlock"))                                                 -- Bloquear pantalla
+hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("loginctl lock-session"))                                              -- Bloquear pantalla
 hl.bind(mainMod .. " + F10", hl.dsp.exec_cmd("~/.config/hypr/scripts/perf-mode.sh"))                    -- Modo rendimiento (sin animaciones ni blur)
+
+-- Varias pantallas (con la otra pantalla extendida: ver pantallas.sh, tecla de pantallas)
+hl.bind(mainMod .. " + period",         hl.dsp.focus({ monitor = "+1" }))                               -- Pasar a la otra pantalla
+hl.bind(mainMod .. " + SHIFT + period", hl.dsp.window.move({ monitor = "+1", follow = true }))         -- Mandar la ventana a la otra pantalla
 
 -- Capturas
 hl.bind("Print",               hl.dsp.exec_cmd("hyprshot -m region -z --clipboard-only"))               -- Captura de región al portapapeles

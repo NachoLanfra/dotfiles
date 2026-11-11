@@ -51,6 +51,10 @@ hl.config({
         -- swallowing: si abris una app grafica desde kitty (zathura, mpv...),
         -- su ventana reemplaza a la terminal y al cerrarla la terminal vuelve
         enable_swallow = true,
+        -- sin el fondo (y el logo) que trae Hyprland: se veia la chica en el subte
+        -- cuando una pantalla todavia no tenia el wallpaper de awww
+        force_default_wallpaper = 0,
+        disable_hyprland_logo   = true,
         swallow_regex  = "^(kitty)$",
     },
     input = {
