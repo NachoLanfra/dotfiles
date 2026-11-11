@@ -3,11 +3,11 @@
 # enfocado sea cual sea su resolucion o escala.
 #
 # wlogout acomoda los botones dentro de un area definida por los margenes. Esa
-# area tiene que ser al menos tan grande como los botones (~944 px de ancho); si
+# area tiene que ser al menos tan grande como los botones (~740 px de ancho); si
 # es mas chica, los botones se desbordan y quedan corridos hacia un lado. Por eso
 # se fija el tamano del area (AREA_W x AREA_H) y se reparte el resto en margenes iguales.
-AREA_W=960
-AREA_H=250
+AREA_W=780
+AREA_H=190
 
 pkill -x wlogout && exit 0
 

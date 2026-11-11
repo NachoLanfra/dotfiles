@@ -1,32 +1,49 @@
 @import "colors.css";
 
+/* Menu de apagado (waybar -> boton de encendido). Cada boton tiene su icono y su
+   color; el elegido (con el mouse o con las flechas) se rellena con ese color.
+   Atajos: u suspender, e cerrar sesion, r reiniciar, s apagar, Esc salir.
+   Los iconos (wlogout/icons) son los simbolicos de Adwaita agrandados a 256 px
+   para que no se vean borrosos;
+   -gtk-recolor los pinta del color del texto del boton. */
+
 * {
-    background-image: none;
     box-shadow: none;
-    font-family: "JetBrainsMono Nerd Font";
+    font-family: "Adwaita Sans", "JetBrainsMono Nerd Font", sans-serif;
 }
 
 window {
-    background-color: alpha(@bg, 0.90);
+    background-color: alpha(@bg, 0.82);
 }
 
 button {
-    min-width: 150px;
-    min-height: 150px;
-    border-radius: 12px;
-    border-color: @bg3;
+    min-width: 132px;
+    margin: 14px;
+    border-radius: 22px;
+    border: 2px solid alpha(@bg3, 0.9);
+    background-color: alpha(@bg1, 0.94);
+    background-repeat: no-repeat;
+    background-position: center 38%;
+    background-size: 44px;
     color: @fg;
-    background-color: @bg2;
-    border-style: solid;
-    border-width: 2px;
-    margin: 25px;
-    font-size: 22px;
-    font-weight: bold;
-}
-
-button:focus, button:active, button:hover {
-    background-color: @accent;
-    border-color: @accent2;
-    color: @onaccent;
+    font-size: 14px;
+    font-weight: 600;
+    padding-bottom: 12px;
+    transition: all 140ms ease;
     outline-style: none;
 }
+
+#suspend  { color: @purple; background-image: -gtk-recolor(url("icons/suspend-symbolic.svg")); }
+#logout   { color: @blue;   background-image: -gtk-recolor(url("icons/logout-symbolic.svg")); }
+#reboot   { color: @yellow; background-image: -gtk-recolor(url("icons/reboot-symbolic.svg")); }
+#shutdown { color: @red;    background-image: -gtk-recolor(url("icons/shutdown-symbolic.svg")); }
+
+/* un solo estilo de "elegido": relleno, sea con el mouse o con las flechas.
+   :focus-visible solo aparece al usar el teclado, asi al abrir no queda ninguno
+   marcado y nunca hay dos marcados distinto a la vez */
+#suspend:hover,  #suspend:focus-visible  { background-color: @purple; border-color: @purple; color: @onaccent; }
+#logout:hover,   #logout:focus-visible   { background-color: @blue;   border-color: @blue;   color: @onaccent; }
+#reboot:hover,   #reboot:focus-visible   { background-color: @yellow; border-color: @yellow; color: @onaccent; }
+#shutdown:hover, #shutdown:focus-visible { background-color: @red;    border-color: @red;    color: @onaccent; }
+
+button:active { opacity: 0.8; }
