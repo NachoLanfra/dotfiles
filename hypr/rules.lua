@@ -47,3 +47,20 @@ hl.window_rule({
     size   = "720 440",
     center = true,
 })
+
+-- Cualquier ventana a pantalla completa (video, peliculas) impide que
+-- hypridle bloquee la sesion o apague la pantalla
+hl.window_rule({
+    name  = "idle-inhibit-fullscreen",
+    match = { class = ".*" },
+    idle_inhibit = "fullscreen",
+})
+
+
+hl.window_rule({
+    name   = "keybinds-float",
+    match  = { class = "^keybinds-float$" },
+    float  = true,
+    size   = "760 640",
+    center = true,
+})

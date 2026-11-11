@@ -48,6 +48,10 @@ hl.config({
         -- las ventanas nuevas abren en el workspace donde lanzaste la app,
         -- aunque cambies de workspace mientras carga
         initial_workspace_tracking = 2,
+        -- swallowing: si abris una app grafica desde kitty (zathura, mpv...),
+        -- su ventana reemplaza a la terminal y al cerrarla la terminal vuelve
+        enable_swallow = true,
+        swallow_regex  = "^(kitty)$",
     },
     input = {
         kb_layout  = "us",
