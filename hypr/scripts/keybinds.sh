@@ -38,7 +38,7 @@ pretty_key() {
 }
 
 parse() {
-    local line sec="" blank=0 rest idx keyexpr desc k
+    local line sec="" blank=0 rest keyexpr desc k
     while IFS= read -r line || [[ -n "$line" ]]; do
         if [[ -z "${line//[[:space:]]/}" ]]; then blank=1; continue; fi
 

@@ -1,0 +1,12 @@
+[Unit]
+Description=Agente de polkit (ventana de contrasena para acciones de administrador)
+PartOf=graphical-session.target
+After=graphical-session.target
+ConditionEnvironment=WAYLAND_DISPLAY
+
+[Service]
+ExecStart=/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+Restart=on-failure
+
+[Install]
+WantedBy=graphical-session.target

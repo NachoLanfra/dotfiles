@@ -1,0 +1,12 @@
+[Unit]
+Description=Historial del portapapeles (texto)
+PartOf=graphical-session.target
+After=graphical-session.target
+ConditionEnvironment=WAYLAND_DISPLAY
+
+[Service]
+ExecStart=/usr/bin/wl-paste --type text --watch cliphist store
+Restart=on-failure
+
+[Install]
+WantedBy=graphical-session.target

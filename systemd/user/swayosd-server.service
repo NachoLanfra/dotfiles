@@ -1,0 +1,14 @@
+[Unit]
+Description=SwayOSD: cartel de volumen y brillo
+PartOf=graphical-session.target
+After=graphical-session.target
+ConditionEnvironment=WAYLAND_DISPLAY
+
+[Service]
+ExecStart=/usr/bin/swayosd-server
+# theme-switch.sh lo reinicia para que relea el css; si se cae, vuelve solo
+Restart=always
+RestartSec=0.5
+
+[Install]
+WantedBy=graphical-session.target

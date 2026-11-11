@@ -1,0 +1,12 @@
+[Unit]
+Description=Ahorro de energia al desenchufar y avisos de bateria baja
+PartOf=graphical-session.target
+After=graphical-session.target
+ConditionEnvironment=WAYLAND_DISPLAY
+
+[Service]
+ExecStart=%h/.config/hypr/scripts/power-watch.sh
+Restart=on-failure
+
+[Install]
+WantedBy=graphical-session.target

@@ -21,6 +21,14 @@ OUT="${XDG_CONFIG_HOME:-$HOME/.config}/theme"
 STATE="$OUT/current"
 DEFAULT_THEME=gruvbox
 
+# Apariencia GTK que no cambia con el tema (el tema de colores, GTK_THEME, viene
+# de hypr/themes/<tema>.sh). Se escribe en settings.ini (GTK3/4), .gtkrc-2.0 (GTK2)
+# y gsettings.
+GTK_FONT="Adwaita Sans 11"
+GTK_ICONS=Adwaita
+GTK_CURSOR=default
+GTK_CURSOR_SIZE=24
+
 list_themes() { for f in "$THEMES_DIR"/*.sh; do basename "${f%.sh}"; done; }
 current_theme() { cat "$STATE" 2>/dev/null || echo "$DEFAULT_THEME"; }
 
@@ -248,17 +256,62 @@ EOF
 .waycal-footer { color: #$MUTED; border-top: 2px solid #$BG2; }
 EOF
 
-    # Tema GTK: apps GTK3 leen settings.ini; las GTK4/libadwaita, los enlaces de gtk-4.0
-    if [[ -n "${GTK_THEME:-}" && -d "/usr/share/themes/$GTK_THEME" ]]; then
-        local cfg="${XDG_CONFIG_HOME:-$HOME/.config}" f
-        for f in "$cfg/gtk-3.0/settings.ini" "$cfg/gtk-4.0/settings.ini"; do
-            [[ -f "$f" ]] && sed -i --follow-symlinks "s/^gtk-theme-name=.*/gtk-theme-name=$GTK_THEME/" "$f"
+    # GTK: GTK3 y GTK4 leen settings.ini, GTK2 lee ~/.gtkrc-2.0. Se generan en
+    # ~/.config/theme (como el resto) y se enlazan desde donde las busca cada version.
+    local cfg="${XDG_CONFIG_HOME:-$HOME/.config}" f
+    local gtk_theme="${GTK_THEME:-Adwaita-dark}"
+    mkdir -p "$OUT/gtk-3.0" "$OUT/gtk-4.0" "$cfg/gtk-3.0" "$cfg/gtk-4.0"
+    for f in gtk-3.0 gtk-4.0; do
+        # GTK4 no conoce las claves de barras de herramientas e imagenes en botones
+        local gtk3_only=""
+        [[ $f == gtk-3.0 ]] && gtk3_only="gtk-toolbar-style=GTK_TOOLBAR_ICONS
+gtk-toolbar-icon-size=GTK_ICON_SIZE_LARGE_TOOLBAR
+gtk-button-images=0
+gtk-menu-images=0"
+        put "$f/settings.ini" <<EOF
+# Generado por theme-switch.sh ($name). No editar.
+[Settings]
+gtk-theme-name=$gtk_theme
+gtk-icon-theme-name=$GTK_ICONS
+gtk-font-name=$GTK_FONT
+gtk-cursor-theme-name=$GTK_CURSOR
+gtk-cursor-theme-size=$GTK_CURSOR_SIZE
+gtk-enable-event-sounds=1
+gtk-enable-input-feedback-sounds=0
+gtk-xft-antialias=1
+gtk-xft-hinting=1
+gtk-xft-hintstyle=hintslight
+gtk-xft-rgba=rgb
+gtk-application-prefer-dark-theme=0
+$gtk3_only
+EOF
+        ln -sf "$OUT/$f/settings.ini" "$cfg/$f/settings.ini"
+    done
+    put gtkrc-2.0 <<EOF
+# Generado por theme-switch.sh ($name). No editar.
+gtk-theme-name="$gtk_theme"
+gtk-icon-theme-name="$GTK_ICONS"
+gtk-font-name="$GTK_FONT"
+gtk-cursor-theme-name="$GTK_CURSOR"
+gtk-cursor-theme-size=$GTK_CURSOR_SIZE
+gtk-toolbar-style=GTK_TOOLBAR_ICONS
+gtk-toolbar-icon-size=GTK_ICON_SIZE_LARGE_TOOLBAR
+gtk-button-images=0
+gtk-menu-images=0
+gtk-enable-event-sounds=1
+gtk-enable-input-feedback-sounds=0
+gtk-xft-antialias=1
+gtk-xft-hinting=1
+gtk-xft-hintstyle="hintslight"
+gtk-xft-rgba="rgb"
+EOF
+    ln -sf "$OUT/gtkrc-2.0" "$HOME/.gtkrc-2.0"
+
+    # GTK4/libadwaita: el tema se aplica con los enlaces de gtk-4.0
+    if [[ -n "${GTK_THEME:-}" && -d "/usr/share/themes/$GTK_THEME/gtk-4.0" ]]; then
+        for f in gtk.css gtk-dark.css assets; do
+            [[ -e "/usr/share/themes/$GTK_THEME/gtk-4.0/$f" ]] && ln -sfn "/usr/share/themes/$GTK_THEME/gtk-4.0/$f" "$cfg/gtk-4.0/$f"
         done
-        if [[ -d "$cfg/gtk-4.0" && -d "/usr/share/themes/$GTK_THEME/gtk-4.0" ]]; then
-            for f in gtk.css gtk-dark.css assets; do
-                [[ -e "/usr/share/themes/$GTK_THEME/gtk-4.0/$f" ]] && ln -sfn "/usr/share/themes/$GTK_THEME/gtk-4.0/$f" "$cfg/gtk-4.0/$f"
-            done
-        fi
     fi
 
     echo "$name" | put current
@@ -275,7 +328,10 @@ wallpaper_for() {
 
 # awww (antes swww): wallpaper con transicion animada. Necesita su demonio.
 ensure_awww_daemon() {
-    pgrep -x awww-daemon >/dev/null || setsid -f awww-daemon </dev/null >/dev/null 2>&1
+    # normalmente lo mantiene vivo awww-daemon.service; si no esta, se lanza a mano
+    pgrep -x awww-daemon >/dev/null ||
+        systemctl --user start awww-daemon.service 2>/dev/null ||
+        setsid -f awww-daemon </dev/null >/dev/null 2>&1
     local _
     for _ in $(seq 1 30); do awww query >/dev/null 2>&1 && return 0; sleep 0.1; done
     return 1
@@ -320,15 +376,25 @@ set_wallpaper() {
     set_wallpaper_swaybg "$wp"
 }
 
+# gsettings: lo que leen las apps GTK/libadwaita ademas de settings.ini
+apply_gsettings() {
+    command -v gsettings >/dev/null 2>&1 || return 0
+    local s=org.gnome.desktop.interface
+    [[ -n "${GTK_THEME:-}" ]] && gsettings set $s gtk-theme "$GTK_THEME" 2>/dev/null
+    gsettings set $s icon-theme "$GTK_ICONS" 2>/dev/null
+    gsettings set $s cursor-theme "$GTK_CURSOR" 2>/dev/null
+    gsettings set $s cursor-size "$GTK_CURSOR_SIZE" 2>/dev/null
+    gsettings set $s font-name "$GTK_FONT" 2>/dev/null
+    return 0
+}
+
 reload_live() {
     pkill -USR1 -x kitty 2>/dev/null
     pkill -USR2 -x waybar 2>/dev/null
     dunstctl reload >/dev/null 2>&1
-    # swayosd no recarga el css solo: se mata y osd-server.sh (supervisor) lo
-    # relanza. Si el supervisor no corria, se arranca (el lock evita duplicados).
-    pkill -x swayosd-server 2>/dev/null
-    setsid -f "${XDG_CONFIG_HOME:-$HOME/.config}/hypr/scripts/osd-server.sh" </dev/null >/dev/null 2>&1
-    [[ -n "${GTK_THEME:-}" ]] && gsettings set org.gnome.desktop.interface gtk-theme "$GTK_THEME" 2>/dev/null
+    # swayosd no recarga el css solo: se reinicia su servicio de systemd
+    systemctl --user restart swayosd-server.service 2>/dev/null
+    apply_gsettings
     hyprctl eval "hl.config({ general = { col = { active_border = \"rgba(${ACCENT}ee)\", inactive_border = \"rgba(${BG2}aa)\" } }, decoration = { shadow = { color = 0xee$BG } } })" >/dev/null 2>&1
 }
 
@@ -365,6 +431,7 @@ pick() {
     local label a b c d e f
     cur="$(current_theme)"
     for t in $(list_themes); do
+        # shellcheck source=/dev/null
         IFS='|' read -r label a b c d e f < <(source "$THEMES_DIR/$t.sh"; echo "$THEME_LABEL|$ACCENT|$RED|$GREEN|$YELLOW|$BLUE|$PURPLE")
         themes+=("$t"); labels+=("$label"); accents+=("$a"); swatches+=("$b $c $d $e $f")
         [[ "$t" == "$cur" ]] && sel=$(( ${#themes[@]} - 1 ))
@@ -416,7 +483,7 @@ case "${1:-}" in
     --menu)     menu ;;
     --pick)     pick ;;
     --next)     apply "$(next_theme)" ;;
-    --boot)     generate "$(current_theme)" && set_wallpaper "$(current_theme)" ;;
+    --boot)     generate "$(current_theme)" && set_wallpaper "$(current_theme)" && apply_gsettings ;;
     --generate) generate "$(current_theme)" ;;
     --list)     list_themes ;;
     "")         echo "uso: ${0##*/} [--menu|--next|--boot|--generate|--list|<tema>]" >&2; exit 1 ;;

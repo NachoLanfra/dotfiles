@@ -2,15 +2,14 @@ hl.env("GTK_TOOLTIP_TIMEOUT", "100")
 
 local terminal = "kitty"
 
+-- Waybar, hypridle, swayosd, el agente de polkit, el historial del portapapeles,
+-- power-watch, fullscreen-boost y el wallpaper/tema ya no se lanzan desde aca:
+-- son servicios de systemd --user (systemd/user/*.service en el repo), que
+-- arrancan con la sesion y se relanzan solos si se caen.
+-- Estado: systemctl --user status waybar   Logs: journalctl --user -u waybar
 hl.on("hyprland.start", function()
     hl.exec_cmd(terminal)
-	hl.exec_cmd("~/.config/hypr/scripts/theme-switch.sh --boot; ~/.config/hypr/scripts/osd-server.sh & waybar > /dev/null 2>&1 & /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & hypridle &")
-    hl.exec_cmd("sh -c 'sleep 1.5 && swayosd-client --output-volume raise && swayosd-client --output-volume lower' &")
-    -- vigila el cargador: ahorro de energia al desenchufar, avisos de bateria baja
-    hl.exec_cmd("~/.config/hypr/scripts/power-watch.sh &")
-    -- CPU a tope unos segundos al entrar/salir de pantalla completa (YouTube iba lento con power-saver)
-    hl.exec_cmd("~/.config/hypr/scripts/fullscreen-boost.sh &")
-    -- historial del portapapeles (texto e imagenes) para SUPER+SHIFT+V
-    hl.exec_cmd("wl-paste --type text --watch cliphist store &")
-    hl.exec_cmd("wl-paste --type image --watch cliphist store &")
+    -- precarga el servidor del cartel de volumen para que la primera tecla no tarde
+    -- (+0: muestra el volumen actual sin cambiarlo)
+    hl.exec_cmd("sh -c 'sleep 1.5 && swayosd-client --output-volume +0' &")
 end)

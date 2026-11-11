@@ -1,0 +1,14 @@
+[Unit]
+Description=Tema del escritorio: genera los colores y pone el wallpaper
+PartOf=graphical-session.target
+After=graphical-session.target awww-daemon.service
+Wants=awww-daemon.service
+ConditionEnvironment=WAYLAND_DISPLAY
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=%h/.config/hypr/scripts/theme-switch.sh --boot
+
+[Install]
+WantedBy=graphical-session.target
