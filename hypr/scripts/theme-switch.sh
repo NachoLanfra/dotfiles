@@ -394,6 +394,14 @@ reload_live() {
     dunstctl reload >/dev/null 2>&1
     # swayosd no recarga el css solo: se reinicia su servicio de systemd
     systemctl --user restart swayosd-server.service 2>/dev/null
+    # hyprlauncher (SUPER+R) queda residente despues de abrirlo la primera vez y
+    # solo lee hyprtoolkit.conf al arrancar: si esta corriendo se lo relanza en
+    # modo daemon, asi el proximo SUPER+R abre rapido y con los colores nuevos
+    if pkill -x hyprlauncher 2>/dev/null; then
+        local _
+        for _ in $(seq 1 20); do pgrep -x hyprlauncher >/dev/null || break; sleep 0.05; done
+        setsid -f hyprlauncher -d --quiet </dev/null >/dev/null 2>&1
+    fi
     apply_gsettings
     hyprctl eval "hl.config({ general = { col = { active_border = \"rgba(${ACCENT}ee)\", inactive_border = \"rgba(${BG2}aa)\" } }, decoration = { shadow = { color = 0xee$BG } } })" >/dev/null 2>&1
 }
