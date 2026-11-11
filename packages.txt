@@ -65,7 +65,6 @@ brightnessctl
 cliphist
 dunst
 nwg-look
-nwg-displays
 uwsm
 sddm
 

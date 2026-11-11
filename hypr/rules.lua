@@ -41,6 +41,14 @@ hl.window_rule({
 })
 
 hl.window_rule({
+    name   = "pantallas-float",
+    match  = { class = "^pantallas-float$" },
+    float  = true,
+    size   = "640 300",
+    center = true,
+})
+
+hl.window_rule({
     name   = "clipboard-float",
     match  = { class = "^clipboard-float$" },
     float  = true,

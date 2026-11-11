@@ -93,7 +93,7 @@ hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true })  
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })                      -- Canción anterior
 
 -- Pantallas
-hl.bind("XF86Launch2", hl.dsp.exec_cmd("nwg-displays"))                                                 -- Configurar monitores
+hl.bind("XF86Launch2", hl.dsp.exec_cmd("~/.config/hypr/scripts/pantallas.sh"))                          -- Pantallas: duplicar / extender
 
 -- Gestos del touchpad
 hl.gesture({ fingers = 3, direction = "horizontal", action = "workspace" })

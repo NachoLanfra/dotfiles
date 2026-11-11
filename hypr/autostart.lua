@@ -9,6 +9,8 @@ local terminal = "kitty"
 -- Estado: systemctl --user status waybar   Logs: journalctl --user -u waybar
 hl.on("hyprland.start", function()
     hl.exec_cmd(terminal)
+    -- pantalla externa ya conectada al iniciar: aplicar lo ultimo que elegiste
+    hl.exec_cmd("~/.config/hypr/scripts/pantallas.sh --guardado")
     -- precarga el servidor del cartel de volumen para que la primera tecla no tarde
     -- (+0: muestra el volumen actual sin cambiarlo)
     hl.exec_cmd("sh -c 'sleep 1.5 && swayosd-client --output-volume +0' &")
