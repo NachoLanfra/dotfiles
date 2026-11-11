@@ -49,7 +49,8 @@ hyprshot
 grim
 slurp
 wev
-swaybg
+swaybg # plan B de theme-switch si falta awww
+awww # wallpaper con transicion animada
 swayosd
 brightnessctl
 cliphist

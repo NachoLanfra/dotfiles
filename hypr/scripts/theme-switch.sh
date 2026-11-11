@@ -272,10 +272,32 @@ wallpaper_for() {
     echo "$HOME/Pictures/wallpapers/gruvbox.jpg"
 }
 
-set_wallpaper() {
-    local wp old new
-    wp="$(wallpaper_for "$1")"
-    [[ -f "$wp" ]] || return 0
+# awww (antes swww): wallpaper con transicion animada. Necesita su demonio.
+ensure_awww_daemon() {
+    pgrep -x awww-daemon >/dev/null || setsid -f awww-daemon </dev/null >/dev/null 2>&1
+    local _
+    for _ in $(seq 1 30); do awww query >/dev/null 2>&1 && return 0; sleep 0.1; done
+    return 1
+}
+
+set_wallpaper_awww() {
+    local wp="$1" pos="center" cx cy
+    ensure_awww_daemon || return 1
+    # si ya esta puesto este wallpaper, no hacer nada (evita repetir la animacion)
+    awww query 2>/dev/null | grep -qF -- "$wp" && return 0
+    # la animacion crece desde donde esta el cursor
+    read -r cx cy < <(hyprctl cursorpos -j 2>/dev/null | jq -r '"\(.x|floor) \(.y|floor)"')
+    [[ -n "${cx:-}" && -n "${cy:-}" ]] && pos="$cx,$cy"
+    awww img "$wp" --transition-type grow --transition-pos "$pos" \
+        --transition-duration 1.4 --transition-fps 60 </dev/null >/dev/null 2>&1 || return 1
+    # el swaybg de antes ya no hace falta
+    pkill -x swaybg 2>/dev/null
+    return 0
+}
+
+# plan B si awww no esta instalado
+set_wallpaper_swaybg() {
+    local wp="$1" old new
     old="$(pgrep -x swaybg || true)"
     # si ya esta puesto este wallpaper, no hacer nada (evita parpadeo)
     if [[ -n "$old" ]] && tr '\0' ' ' < "/proc/${old%%$'\n'*}/cmdline" 2>/dev/null | grep -qF -- "-i $wp "; then
@@ -287,6 +309,14 @@ set_wallpaper() {
     sleep 0.7
     # cierra solo los swaybg anteriores; el nuevo es el ultimo en arrancar
     for new in $old; do kill "$new" 2>/dev/null; done
+}
+
+set_wallpaper() {
+    local wp
+    wp="$(wallpaper_for "$1")"
+    [[ -f "$wp" ]] || return 0
+    if command -v awww >/dev/null 2>&1 && set_wallpaper_awww "$wp"; then return 0; fi
+    set_wallpaper_swaybg "$wp"
 }
 
 reload_live() {
