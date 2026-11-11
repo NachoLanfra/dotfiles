@@ -8,6 +8,8 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("sh -c 'sleep 1.5 && swayosd-client --output-volume raise && swayosd-client --output-volume lower' &")
     -- vigila el cargador: ahorro de energia al desenchufar, avisos de bateria baja
     hl.exec_cmd("~/.config/hypr/scripts/power-watch.sh &")
+    -- CPU a tope unos segundos al entrar/salir de pantalla completa (YouTube iba lento con power-saver)
+    hl.exec_cmd("~/.config/hypr/scripts/fullscreen-boost.sh &")
     -- historial del portapapeles (texto e imagenes) para SUPER+SHIFT+V
     hl.exec_cmd("wl-paste --type text --watch cliphist store &")
     hl.exec_cmd("wl-paste --type image --watch cliphist store &")
