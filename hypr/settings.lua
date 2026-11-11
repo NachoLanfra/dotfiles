@@ -59,6 +59,10 @@ hl.config({
         follow_mouse = 1,
         touchpad = {
             natural_scroll = false,
+            -- el click depende de cuantos dedos apoyas (2 = derecho, 3 = medio) y no de la
+            -- zona del pad; sin esto, apretar con dos dedos caia en la zona central = click
+            -- del medio = pegaba el portapapeles
+            clickfinger_behavior = true,
         },
     },
 })
