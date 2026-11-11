@@ -211,7 +211,8 @@ EOF
 EOF
     # dunst solo lee dunstrc.d junto al dunstrc que carga (el de /etc), asi que
     # armamos ~/.config/dunst/dunstrc = config estandar + colores del tema
-    { cat /etc/dunst/dunstrc 2>/dev/null; echo; cat "$OUT/dunst.conf"; } \
+    # (se saca default_icon de low/normal: sino notify-send muestra una lamparita)
+    { sed -E '/^[[:space:]]*default_icon = dialog-information$/d' /etc/dunst/dunstrc 2>/dev/null; echo; cat "$OUT/dunst.conf"; } \
         > "${XDG_CONFIG_HOME:-$HOME/.config}/dunst/dunstrc"
 
     # swayosd (cartel de volumen/brillo): lee ~/.config/swayosd/style.css
