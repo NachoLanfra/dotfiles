@@ -1,5 +1,7 @@
 # Paquetes de repos oficiales (pacman). Todo lo que esté debajo de la línea
-# "# Base del sistema y arranque
+# "### AUR ###" se instala con yay.
+
+# Base del sistema y arranque
 base
 base-devel
 linux
@@ -15,6 +17,9 @@ nano
 wget
 unzip
 smartmontools
+bash-completion # Tab completa comandos y opciones
+man-db # el comando man
+man-pages # paginas de manual de Linux
 
 # Video y multimedia
 intel-media-driver
@@ -32,12 +37,16 @@ maven
 sqlc
 docker
 docker-compose
+shellcheck # revisa scripts bash
+stylua # formateador de Lua
 
 # Utilidades
 htop
 flatpak
-
-### AUR ###" se instala con yay.
+pacman-contrib # paccache: limpia la cache de pacman
+reflector # elige los mirrors mas rapidos
+timeshift # snapshots del sistema (rsync, ext4)
+cronie # programa los snapshots de timeshift
 
 # Interfaz y Window Manager
 hyprland
