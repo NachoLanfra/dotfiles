@@ -323,13 +323,10 @@ reload_live() {
     pkill -USR1 -x kitty 2>/dev/null
     pkill -USR2 -x waybar 2>/dev/null
     dunstctl reload >/dev/null 2>&1
-    # swayosd no recarga el css solo: se reinicia (queda en segundo plano)
-    if pgrep -x swayosd-server >/dev/null; then
-        pkill -x swayosd-server
-        # esperar a que el viejo suelte el nombre en dbus; si no, el nuevo falla
-        for _ in 1 2 3 4 5 6 7 8 9 10; do pgrep -x swayosd-server >/dev/null || break; sleep 0.1; done
-        setsid -f swayosd-server </dev/null >/dev/null 2>&1
-    fi
+    # swayosd no recarga el css solo: se mata y osd-server.sh (supervisor) lo
+    # relanza. Si el supervisor no corria, se arranca (el lock evita duplicados).
+    pkill -x swayosd-server 2>/dev/null
+    setsid -f "${XDG_CONFIG_HOME:-$HOME/.config}/hypr/scripts/osd-server.sh" </dev/null >/dev/null 2>&1
     [[ -n "${GTK_THEME:-}" ]] && gsettings set org.gnome.desktop.interface gtk-theme "$GTK_THEME" 2>/dev/null
     hyprctl eval "hl.config({ general = { col = { active_border = \"rgba(${ACCENT}ee)\", inactive_border = \"rgba(${BG2}aa)\" } }, decoration = { shadow = { color = 0xee$BG } } })" >/dev/null 2>&1
 }
