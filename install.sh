@@ -179,6 +179,35 @@ configure_system() {
         echo "copia   /etc/timeshift/timeshift.json (snapshots en el disco $uuid)"
         echo "        primer snapshot a mano: sudo timeshift --create --comments 'inicial'"
     fi
+    # avisos de cron: cron-notify manda notificaciones a tu sesion desde trabajos de
+    # root, y timeshift-check (lo lanza cron cada hora) avisa al sacar un snapshot.
+    # Se copian (no se enlazan) porque los ejecuta root.
+    if [[ ! -d /etc/cron.d ]]; then
+        echo "salta   avisos de cron (cronie no esta instalado)"
+    else
+        local tmpn
+        tmpn="$(mktemp)"
+        sed "s/@USER@/$USER/" "$DOTFILES/system/cron-notify.sh" > "$tmpn"
+        if cmp -s "$tmpn" /usr/local/bin/cron-notify 2>/dev/null; then
+            echo "ok      /usr/local/bin/cron-notify"
+        else
+            sudo install -Dm755 -o root -g root "$tmpn" /usr/local/bin/cron-notify
+            echo "copia   /usr/local/bin/cron-notify"
+        fi
+        rm -f "$tmpn"
+        if cmp -s "$DOTFILES/system/timeshift-check.sh" /usr/local/bin/timeshift-check 2>/dev/null; then
+            echo "ok      /usr/local/bin/timeshift-check"
+        else
+            sudo install -Dm755 -o root -g root "$DOTFILES/system/timeshift-check.sh" /usr/local/bin/timeshift-check
+            echo "copia   /usr/local/bin/timeshift-check"
+        fi
+        if cmp -s "$DOTFILES/system/timeshift-hourly.cron" /etc/cron.d/timeshift-hourly 2>/dev/null; then
+            echo "ok      /etc/cron.d/timeshift-hourly"
+        else
+            sudo install -Dm644 -o root -g root "$DOTFILES/system/timeshift-hourly.cron" /etc/cron.d/timeshift-hourly
+            echo "copia   /etc/cron.d/timeshift-hourly"
+        fi
+    fi
     # actualizacion semanal automatica: la lanza anacron (de cronie) desde
     # /etc/cron.daily. Se copia (no se enlaza) porque la ejecuta root.
     if [[ ! -d /etc/cron.daily ]]; then

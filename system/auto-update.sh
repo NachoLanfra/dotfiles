@@ -44,14 +44,8 @@ exec >>"$LOG" 2>&1
 log() { printf '[%s] %s\n' "$(date '+%F %T')" "$*"; }
 
 # notify <titulo> <texto> [urgencia]: notificacion en la sesion del usuario
-notify() {
-    local uid bus
-    uid="$(id -u "$USER_NAME" 2>/dev/null)" || return 0
-    bus="/run/user/$uid/bus"
-    [[ -S "$bus" ]] || return 0
-    runuser -u "$USER_NAME" -- env DBUS_SESSION_BUS_ADDRESS="unix:path=$bus" \
-        notify-send -a auto-update -u "${3:-normal}" "$1" "$2" || true
-}
+# (cron-notify lo instala install.sh en /usr/local/bin)
+notify() { cron-notify "$1" "$2" "${3:-normal}" auto-update; }
 
 fail() {
     log "ERROR: $*"
@@ -69,6 +63,8 @@ if ! curl -fsI --max-time 15 https://archlinux.org >/dev/null; then
     log "sin conexion; se reintenta manana"
     exit 0
 fi
+
+notify "Actualizando el sistema" "Corre la actualizacion semanal automatica. Mejor no apagar la compu hasta que avise." low
 
 # 1. snapshot (tag W: lo rota timeshift junto con los semanales, no se acumulan)
 if command -v timeshift >/dev/null; then
