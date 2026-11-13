@@ -56,6 +56,8 @@ hl.config({
         force_default_wallpaper = 0,
         disable_hyprland_logo   = true,
         swallow_regex  = "^(kitty)$",
+        -- el click del medio (apretar el pad con 3 dedos) no pega el portapapeles
+        middle_click_paste = false,
     },
     input = {
         kb_layout  = "us",
